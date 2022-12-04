@@ -1,13 +1,14 @@
 # PyPass-SAB 🐍
 <div align="center">
     <br>
-    <img src="https://img.shields.io/badge/Python-3.9-blue.svg">
+    <img src="https://img.shields.io/badge/Python-3.10-blue.svg">
     <img src="https://img.shields.io/github/languages/code-size/GuillaumeMCK/PyPass-SAB">
     <img src="https://img.shields.io/badge/Platform-Windows-blue.svg">
     <a href="https://github.com/GuillaumeMCK/PyPass-SAB/releases">
         <img src="https://img.shields.io/github/downloads/GuillaumeMCK/PyPass-SAB/total">
     </a>
 </div>
+<br/>
 
 > PyPass-SAB is a patcher write in python that allows you to bypass the **100 days remaining limit** 
 > of StartAllBack this is NOT a keygen. <br/>
@@ -16,7 +17,7 @@
 > the "cracks" found on 🇷🇺 forums. 🤷‍♂ <br/>
 > <br/>
 <div align="center">
-    <img src="https://github.com/GuillaumeMCK/PyPass-SAB/.assets/banner.png" style="padding-left: 10%; padding-right: 10%">
+    <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/banner.png" width="500">
 </div>
 <br>
 
@@ -30,13 +31,19 @@
 
 ## The patch
 ### Before
-![before](https://github.com/GuillaumeMCK/PyPass-SAB/.assets/original_file.png)
-<br/>
-### After
-![after](https://github.com/GuillaumeMCK/PyPass-SAB/.assets/patched_file.png)
-<br/>
-*NOTE: The patch was created with ghidra*
+<details>
+  <summary>Show</summary>
+    <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/original.png" width="600">
+</details>
 
+### After
+<details>
+  <summary>Show</summary>
+    <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/patched.png" width="600">
+</details>
+<br/>
+
+*NOTE: The patch was created with ghidra*
 ## How to launch it?
 **From release page** : <br/>
 Download the latest [release](https://github.com/GuillaumeMCK/PyPass-SAB/releases), unzip it and launch the file "main.exe"
