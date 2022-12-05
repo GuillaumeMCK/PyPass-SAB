@@ -5,6 +5,7 @@ from os import system, remove
 from time import sleep
 
 from tkinter.filedialog import askopenfilename
+from tkinter import messagebox
 
 from src.widgets.event_viewer import EventViewer
 from src.models import Patch
@@ -16,9 +17,12 @@ def _get_file_name(path: str) -> str:
 
 class Patcher(object):
     _file_path = "C:/Program Files/StartAllBack/StartAllBackX64.dll"
-    _file_hash = "b1a2ca877085d93f36530a23c94c7876c22d1283"
-    _patched_file_hash = "55c60db9708095089103929e6140af91ffc88112"
-    _patches = [Patch(offset=0x1369, bytes=b'\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3')]
+    _file_hash = "3f38db606009e1fc4ea82beb357f8351d438c0d0"
+    _patched_file_hash = "b812d69da8e057463f33ad500dabb7d52be6b6a5"
+    _patches = [
+        Patch(offset=0x1369, bytes=b'\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3'),
+        Patch(offset=0x1564, bytes=b'\xb8\x00\x00\x00\x00\xc3')
+    ]
     _backup_path = ""
 
     def __init__(self, _do_backup_func: any, ev: EventViewer):
@@ -26,7 +30,7 @@ class Patcher(object):
         self.checkup_is_valid = False
         self._do_backup_func = _do_backup_func
         # self._gen_patches(self._readFile("C:/Program Files/StartAllBack/StartAllBackX64.dll"),
-        #                   self._readFile("C:/Program Files/StartAllBack/StartAllBackX64.patched.dll"))
+        #                   self._readFile("C:/Program Files/StartAllBack/StartAllBackX64_patched.dll"))
 
     def checkup(self):
         """
@@ -44,8 +48,13 @@ class Patcher(object):
                 self.ev.event_done("Patched")
             else:
                 self.ev.event_error("File not matching")
-                self.checkup_is_valid = False
-                self._file_path = ""
+                if messagebox.askyesno(
+                        "File not matching",
+                        "The file is not matching the original file. Do you want to patch it anyway ?"):
+                    self.checkup_is_valid = True
+                else:
+                    self.checkup_is_valid = False
+                    self._file_path = ""
         else:
             self.ev.event_error("Not found")
             self.ev.event("Select the file... ")
@@ -172,4 +181,6 @@ class Patcher(object):
             elif patch_size > 0:
                 patches.append(Patch(offset=i - patch_size, bytes=patched_file[i - patch_size:i]))
                 patch_size = 0
+        for patch in patches:
+            print(f'Patch(offset={hex(patch.offset)}, bytes={patch.bytes})')
         return patches
