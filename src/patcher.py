@@ -2,13 +2,14 @@ from datetime import datetime
 from os import path
 from hashlib import sha1
 from os import system, remove
-from time import sleep
 
 from tkinter.filedialog import askopenfilename
 from tkinter import messagebox
 
 from src.widgets.event_viewer import EventViewer
-from src.models import Patch
+from src.models import Patch, FileInfo
+from src.datas import PATCHES_REPOSITORY
+from psutil import process_iter, NoSuchProcess, AccessDenied
 
 
 def _get_file_name(path: str) -> str:
@@ -17,20 +18,14 @@ def _get_file_name(path: str) -> str:
 
 class Patcher(object):
     _file_path = "C:/Program Files/StartAllBack/StartAllBackX64.dll"
-    _file_hash = "3f38db606009e1fc4ea82beb357f8351d438c0d0"
-    _patched_file_hash = "b812d69da8e057463f33ad500dabb7d52be6b6a5"
-    _patches = [
-        Patch(offset=0x1369, bytes=b'\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3'),
-        Patch(offset=0x1564, bytes=b'\xb8\x00\x00\x00\x00\xc3')
-    ]
-    _backup_path = ""
+    _backup_file_path = ""
+    _bypass_hash_not_match = False
 
     def __init__(self, _do_backup_func: any, ev: EventViewer):
         self.ev = ev
         self.checkup_is_valid = False
         self._do_backup_func = _do_backup_func
-        # self._gen_patches(self._readFile("C:/Program Files/StartAllBack/StartAllBackX64.dll"),
-        #                   self._readFile("C:/Program Files/StartAllBack/StartAllBackX64_patched.dll"))
+        self.check_file_result = FileInfo()
 
     def checkup(self):
         """
@@ -41,17 +36,21 @@ class Patcher(object):
         if path.isfile(self._file_path):
             self.ev.event_done("Found")
             self.ev.event("Checking hash... ")
-            if self._check_hash(self._file_path, self._file_hash, print_hash=True):
+            self.check_file_result = self._get_file_info(self._file_path, print_hash=True)
+            if self.check_file_result.is_original:
                 self.ev.event_warning("Not patched")
                 self.checkup_is_valid = True
-            elif self._check_hash(self._file_path, self._patched_file_hash):
+            elif self.check_file_result.is_patched:
                 self.ev.event_done("Patched")
+            elif self._bypass_hash_not_match:
+                self.ev.event_warning("Not matching (bypassed)")
+                self.checkup_is_valid = True
             else:
-                self.ev.event_error("File not matching")
+                self.ev.event_error("Not matching")
                 if messagebox.askyesno(
                         "File not matching",
                         "The file is not matching the original file. Do you want to patch it anyway ?"):
-                    self.checkup_is_valid = True
+                    self._bypass_hash_not_match = True
                 else:
                     self.checkup_is_valid = False
                     self._file_path = ""
@@ -81,15 +80,38 @@ class Patcher(object):
             self.ev.event(f"{file_hash} ", color="blue")
         return file_hash
 
-    def _check_hash(self, file_path: str, hash: str, print_hash: bool = False) -> bool:
+    def _get_file_info(self, file_path: str, print_hash: bool = False) -> FileInfo:
         """
-        Check if the hash of a file is matching
+        Get the information of startallback.dll
         :param file_path: Path of the file
-        :param hash: Hash to compare
         :param print_hash: Print the hash of the file
-        :return True if the hash is matching, False otherwise
+        :return CheckFileResult object
         """
-        return self._get_hash(file_path, print_hash) == hash
+        _hash = self._get_hash(file_path, print_hash)
+        _file_info_result = FileInfo()
+        for infos in PATCHES_REPOSITORY:
+            _file_info_result.original_hash = infos['original_hash']
+            _file_info_result.patched_hash = infos['patched_hash']
+            _file_info_result.version = infos['version']
+            if _hash == infos['original_hash']:
+                _file_info_result.is_original = True
+                break
+            elif _hash == infos['patched_hash']:
+                _file_info_result.is_patched = True
+                break
+        return _file_info_result
+
+    @staticmethod
+    def get_patches(version: str):
+        """
+        Get the patches for a specific version
+        :param version: Version of the patch
+        :return: Patches
+        """
+        for infos in PATCHES_REPOSITORY:
+            if infos['version'] == version:
+                return infos['patches']
+        return []
 
     def _create_backup(self) -> None:
         """
@@ -97,9 +119,26 @@ class Patcher(object):
         :return: None
         """
         self.ev.event("Creating backup... ")
-        self._backup_path = self._file_path + f".{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.bak"
-        if self._writeFile(self._backup_path, self._readFile(self._file_path)):
-            self.ev.event_done("OK")
+        self._backup_file_path = self._file_path + f".{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.bak"
+        if self._write_file(self._backup_file_path, self._read_file(self._file_path)):
+            self.ev.event_done("Done")
+
+    def _kill_process(self, process_name: str) -> None:
+        """
+        Kill a process
+        :param process_name: Name of the process
+        :return: None
+        """
+        self.ev.event(f"Killing {process_name}... ")
+        system(f"taskkill /f /im {process_name}")
+        # wait for the process to stop
+        for proc in process_iter():
+            try:
+                if proc.name() == process_name:
+                    proc.wait()
+            except (NoSuchProcess, AccessDenied):
+                pass
+        self.ev.event_done("Done")
 
     def patch(self) -> None:
         """
@@ -110,24 +149,26 @@ class Patcher(object):
         if self.checkup_is_valid:
             if self._do_backup_func():
                 self._create_backup()
-            original_file = self._readFile(self._file_path)
-            patched_file = original_file
-            self.ev.event("Stop explorer.exe", end="\n")
-            system("taskkill /f /im explorer.exe")
+            _original_file = self._read_file(self._file_path)
+            _patched_file = _original_file
+            self._kill_process("explorer.exe")
             self.ev.event("Patching... ")
-            for patch in self._patches:
-                patched_file = patched_file[:patch.offset] + patch.bytes + patched_file[patch.offset + len(patch.bytes):]
-            sleep(1)  # Wait for explorer
-            if self._writeFile(self._file_path, patched_file):
+            for patch in self.get_patches(self.check_file_result.version):
+                _patched_file = _patched_file[:patch.offset] + patch.bytes + \
+                                _patched_file[patch.offset + len(patch.bytes):]
+            if self._write_file(self._file_path, _patched_file):
                 self.ev.event_done("Done")
                 self.ev.event("Checking hash... ")
-                if self._check_hash(self._file_path, self._patched_file_hash, print_hash=True):
+                if self._get_hash(self._file_path) == self.check_file_result.patched_hash:
                     self.ev.event_done("Patched")
-                else:
+                elif not self._bypass_hash_not_match:
                     self.ev.event_error("Not matching")
                     self.ev.event("Restoring backup... ")
-                    if self._writeFile(self._file_path, original_file):
+                    if self._write_file(self._file_path, _original_file):
                         self.ev.event_done("Done")
+                else:
+                    self.ev.event_warning("Not matching (bypassed)")
+                    self.ev.event(f"Backup directory: {self._backup_file_path}", end="\r")
             else:
                 self.ev.event_error("Failed")
             self.ev.event("Start explorer.exe", end="\n")
@@ -136,7 +177,7 @@ class Patcher(object):
             self.ev.event_error("Checkup not valid")
         self.ev.add_banner("End of patch")
 
-    def _writeFile(self, file_path: str, data: bytes) -> bool:
+    def _write_file(self, file_path: str, data: bytes) -> bool:
         """
         Write data to a file
         :param file_path: Path to the file
@@ -153,8 +194,9 @@ class Patcher(object):
             self.ev.event_error("Error while writing file : " + str(e))
             return False
 
-    def _readFile(self, path: str) -> bytes:
+    def _read_file(self, path: str) -> bytes:
         """
+        Read a file
         :param path: Path of the file
         :return Data of the file
         """
@@ -166,13 +208,16 @@ class Patcher(object):
             raise e
 
     @staticmethod
-    def _gen_patches(original_file: bytes, patched_file: bytes) -> list[Patch]:
+    def gen_patches(original_file_path: str, patched_file_path: str) -> list[Patch]:
         """
         Generate patches from two files
-        :param original_file: The original file
-        :param patched_file: The patched file created with ghidra
-        :return: The list of patches
+        :param original_file_path: Path of the original file
+        :param patched_file_path: Path of the patched file
+        :return: List of patches
         """
+        rf = lambda f: open(f, 'rb').read()
+        original_file = rf(original_file_path)
+        patched_file = rf(patched_file_path)
         patches = []
         patch_size = 0
         for i in range(len(original_file)):
