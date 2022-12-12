@@ -80,8 +80,7 @@
 ## How to launch it?
 
 **From release page** : <br/>
-Download the latest [release](https://github.com/GuillaumeMCK/PyPass-SAB/releases), unzip it and launch the file "
-main.exe"
+Download the latest [release](https://github.com/GuillaumeMCK/PyPass-SAB/releases), unzip it and launch the file "main.exe"
 <br><br/>
 **From sources** : <br/>
 Follow the instructions below <br/>
@@ -95,7 +94,7 @@ py main.py
 
 ## Build
 
-To build the project run
+To build the project
 
 ```batch
 cd PyPass-SAB
