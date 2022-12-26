@@ -22,7 +22,7 @@
 ## Why did I make this?
 Because it's bored to reinstall StartAllBack every 100 days and I don't trust
 the "cracks" on the internet 🤷‍♂.<br/>
-I also wanted to make a patcher by my own a patcher for a software with python...<br>
+I also wanted to make a patcher by myself, so I made this one.
 But if you want to support the developer of StartAllBack you can buy it on [this website](https://www.startallback.com/).
 
 ## What does it do?
@@ -78,7 +78,7 @@ But if you want to support the developer of StartAllBack you can buy it on [this
 ```
 </details>
 
-> **Note**: The patch is not a keygen, it will not change the expiration date of the software.
+> **Note**: The patch is not a keygen, and it will not change the expiration date of the software.
 
 ## How to launch it?
 
