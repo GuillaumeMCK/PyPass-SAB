@@ -18,5 +18,14 @@ PATCHES_REPOSITORY = [
             Patch(offset=0x1369, bytes=b'\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3'),
             Patch(offset=0x1564, bytes=b'\xb8\x00\x00\x00\x00\xc3')
         ]
+    },
+    {
+        "version": "3.5.7",
+        "original_hash": "5e4009d5400360af836045eaf76cd6dcb15c688b",
+        "patched_hash": "26b168a2db8a7ed62ba4222bef1bfd2db064dc8e",
+        "patches": [
+            Patch(offset=0x1369, bytes=b'\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3'),
+            Patch(offset=0x1564, bytes=b'\xb8\x00\x00\x00\x00\xc3')
+        ]
     }
 ]
