@@ -216,6 +216,7 @@ class Patcher(object):
         :return: List of patches
         """
         rf = lambda f: open(f, 'rb').read()
+        hash = lambda f: sha1(rf(f)).hexdigest()
         original_file = rf(original_file_path)
         patched_file = rf(patched_file_path)
         patches = []
@@ -228,4 +229,6 @@ class Patcher(object):
                 patch_size = 0
         for patch in patches:
             print(f'Patch(offset={hex(patch.offset)}, bytes={patch.bytes})')
+        print(f"Original hash: {hash(original_file_path)}")
+        print(f"Patched hash: {hash(patched_file_path)}")
         return patches
