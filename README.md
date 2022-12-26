@@ -12,15 +12,18 @@
 <br/>
 
 > PyPass-SAB is a patcher write in python that allows you to bypass the **100 days remaining limit**
-> of StartAllBack this is NOT a keygen. <br/>
-> *Why did I make this?*<br/>
-> Because it's bored to reinstall StartAllBack every 100 days and I don't trust
-> the "cracks" found on 🇷🇺 forums. 🤷‍♂ <br/>
+> of StartAllBack. This patcher is compatible with versions between **v3.5.5** and **v3.5.7**.
 > <br/>
 <div align="center">
     <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/banner.png" width="500">
 </div>
 <br>
+
+## Why did I make this?
+Because it's bored to reinstall StartAllBack every 100 days and I don't trust
+the "cracks" on the internet 🤷‍♂.<br/>
+I also wanted to make a patcher by my own a patcher for a software with python...<br>
+But if you want to support the developer of StartAllBack you can buy it on [this website](https://www.startallback.com/).
 
 ## What does it do?
 
@@ -75,7 +78,7 @@
 ```
 </details>
 
-*NOTE: The patch was created with ghidra*
+> **Note**: The patch is not a keygen, it will not change the expiration date of the software.
 
 ## How to launch it?
 
@@ -102,6 +105,6 @@ py setup.py build
 ```
 
 ## Disclaimer
-
-I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED OR ANY ILLEGAL USAGE OF THIS SCRIPT.
-USE IT AT YOUR OWN RISK.
+> **Warning**:
+> I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED OR ANY ILLEGAL USAGE OF THIS SCRIPT.
+> USE IT AT YOUR OWN RISK.
