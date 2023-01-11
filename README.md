@@ -78,7 +78,7 @@ But if you want to support the developer of StartAllBack you can buy it on [this
 ```
 </details>
 
-> **Note**: The patch is not a keygen, and it will not change the expiration date of the software.
+> **Note**: The patch will not change the expiration date of the software.
 
 ## How to launch it?
 
