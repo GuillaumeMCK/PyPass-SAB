@@ -1,17 +1,16 @@
 from datetime import datetime
-from os import path
 from hashlib import sha1
 from os import path
 from os import system, remove
-
-from tkinter.filedialog import askopenfilename
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
-from src.widgets.event_viewer import EventViewer
-from src.models import Patch, FileInfo
-from src.datas import PATCHES_REPOSITORY
 from psutil import process_iter, NoSuchProcess, AccessDenied
+
+from src.datas import PATCHES_REPOSITORY
+from src.datas.patches_repository import create_patch_repo
+from src.models import Patch, FileInfo
+from src.widgets.event_viewer import EventViewer
 
 
 def _get_file_name(path: str) -> str:
@@ -155,9 +154,15 @@ class Patcher(object):
             _patched_file = _original_file
             self._kill_process("explorer.exe")
             self.ev.event("Patching... ")
-            for patch in self.get_patches(self.check_file_result.version):
-                _patched_file = _patched_file[:patch.offset] + patch.bytes + \
-                                _patched_file[patch.offset + len(patch.bytes):]
+            try:
+                for patch in self.get_patches(self.check_file_result.version):
+                    _patched_file = _patched_file[:patch.offset] + patch.bytes + \
+                                    _patched_file[patch.offset + len(patch.bytes):]
+            except Exception as e:
+                self.ev.event_error("Failed")
+                self.ev.event(f"Error: {e}", color="red")
+                self._restore_backup()
+                return
             if self._write_file(self._file_path, _patched_file):
                 self.ev.event_done("Done")
                 self.ev.event("Checking hash... ")
@@ -166,8 +171,7 @@ class Patcher(object):
                 elif not self._bypass_hash_not_match:
                     self.ev.event_error("Not matching")
                     self.ev.event("Restoring backup... ")
-                    if self._write_file(self._file_path, _original_file):
-                        self.ev.event_done("Done")
+                    self._restore_backup()
                 else:
                     self.ev.event_warning("Not matching (bypassed)")
                     self.ev.event(f"Backup directory: {self._backup_file_path}", end="\r")
@@ -178,6 +182,17 @@ class Patcher(object):
         else:
             self.ev.event_error("Checkup not valid")
         self.ev.add_banner("End of patch")
+
+    def _restore_backup(self) -> None:
+        """
+        Restore the backup of the file
+        :return: None
+        """
+        self.ev.event("Restoring backup... ")
+        if self._write_file(self._file_path, self._read_file(self._backup_file_path)):
+            self.ev.event_done("Done")
+        else:
+            self.ev.event_error("Failed")
 
     def _write_file(self, file_path: str, data: bytes) -> bool:
         """
