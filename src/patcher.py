@@ -1,10 +1,12 @@
 from datetime import datetime
 from os import path
 from hashlib import sha1
+from os import path
 from os import system, remove
 
 from tkinter.filedialog import askopenfilename
 from tkinter import messagebox
+from tkinter.filedialog import askopenfilename
 
 from src.widgets.event_viewer import EventViewer
 from src.models import Patch, FileInfo
@@ -208,9 +210,10 @@ class Patcher(object):
             raise e
 
     @staticmethod
-    def gen_patches(original_file_path: str, patched_file_path: str) -> list[Patch]:
+    def gen_patches(original_file_path: str, patched_file_path: str, version: str) -> list[Patch]:
         """
         Generate patches from two files
+        :param version: Version of the patch
         :param original_file_path: Path of the original file
         :param patched_file_path: Path of the patched file
         :return: List of patches
@@ -227,8 +230,9 @@ class Patcher(object):
             elif patch_size > 0:
                 patches.append(Patch(offset=i - patch_size, bytes=patched_file[i - patch_size:i]))
                 patch_size = 0
-        for patch in patches:
-            print(f'Patch(offset={hex(patch.offset)}, bytes={patch.bytes})')
-        print(f"Original hash: {hash(original_file_path)}")
-        print(f"Patched hash: {hash(patched_file_path)}")
+        print(create_patch_repo(
+            patches=patches,
+            original_hash=hash(original_file_path),
+            patched_hash=hash(patched_file_path),
+            version=version))
         return patches
