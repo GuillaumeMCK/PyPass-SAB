@@ -29,3 +29,12 @@ PATCHES_REPOSITORY = [
         ]
     }
 ]
+
+
+def create_patch_repo(version: str, original_hash: str, patched_hash: str, patches: list[Patch]) -> dict[str, any]:
+    return {
+        "version": version,
+        "original_hash": original_hash,
+        "patched_hash": patched_hash,
+        "patches": [patch.dict() for patch in patches]
+    }
