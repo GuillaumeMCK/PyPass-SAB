@@ -27,7 +27,16 @@ PATCHES_REPOSITORY = [
             {"offset": 0x1369, "bytes": b"\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3"},
             {"offset": 0x1564, "bytes": b"\xb8\x00\x00\x00\x00\xc3"},
         ]
-    }
+    },
+    {
+        "version": "v3.6.0", "original_hash": "c517f366c06400fbf89b142090d6842c224afc8a",
+        "patched_hash": "bc759d64b3d7af277814e2ceae3dbf9577f3a24e",
+        "patches": [
+            {"offset": 4972, "bytes": b"gH\xc7\x01\x01\x00\x00\x00"},
+            {"offset": 4981, "bytes": b"\xc7\xc0\x01\x00\x00\x00\xc3"},
+            {"offset": 5480, "bytes": b"\xb8\x00\x00\x00\x00\xc3"}
+        ]
+    },
 ]
 
 
