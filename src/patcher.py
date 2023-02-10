@@ -103,7 +103,7 @@ class Patcher(object):
         return _file_info_result
 
     @staticmethod
-    def get_patches(version: str):
+    def get_patches(version: str) -> list[Patch]:
         """
         Get the patches for a specific version
         :param version: Version of the patch
@@ -111,7 +111,8 @@ class Patcher(object):
         """
         for infos in PATCHES_REPOSITORY:
             if infos['version'] == version:
-                return infos['patches']
+                for patch in infos['patches']:
+                    yield Patch(offset=patch['offset'], bytes=patch['bytes'])
         return []
 
     def _create_backup(self) -> None:
