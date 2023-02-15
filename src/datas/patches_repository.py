@@ -29,7 +29,8 @@ PATCHES_REPOSITORY = [
         ]
     },
     {
-        "version": "v3.6.0", "original_hash": "c517f366c06400fbf89b142090d6842c224afc8a",
+        "version": "v3.6.0",
+        "original_hash": "c517f366c06400fbf89b142090d6842c224afc8a",
         "patched_hash": "bc759d64b3d7af277814e2ceae3dbf9577f3a24e",
         "patches": [
             {"offset": 4972, "bytes": b"gH\xc7\x01\x01\x00\x00\x00"},
@@ -37,6 +38,16 @@ PATCHES_REPOSITORY = [
             {"offset": 5480, "bytes": b"\xb8\x00\x00\x00\x00\xc3"}
         ]
     },
+    {
+        'version': 'v3.6.1',
+        'original_hash': '31fb650427a846b7d3a381db0ce2a46df45b6b94',
+        'patched_hash': '6a0989c36afecb6d778a0a685f9923ad2dfc2c98',
+        'patches': [
+            {'offset': 4972, 'bytes': b'gH\xc7\x01\x01\x00\x00\x00'},
+            {'offset': 4981, 'bytes': b'\xc7\xc0\x01\x00\x00\x00\xc3'},
+            {'offset': 5480, 'bytes': b'\xb8\x00\x00\x00\x00\xc3'}
+        ]
+    }
 ]
 
 
