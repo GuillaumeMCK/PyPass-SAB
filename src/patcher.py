@@ -175,7 +175,7 @@ class Patcher(object):
                     self._restore_backup()
                 else:
                     self.ev.event_warning("Not matching (bypassed)")
-                    self.ev.event(f"Backup directory: {self._backup_file_path}", end="\r")
+                    self.ev.event(f"Backup directory: {self._backup_file_path}")
             else:
                 self.ev.event_error("Failed")
             self.ev.event("Start explorer.exe", end="\n")
