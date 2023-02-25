@@ -23,15 +23,16 @@
 Because it's bored to reinstall StartAllBack every 100 days and I don't trust
 the "cracks" on the internet 🤷‍♂.<br/>
 I also wanted to make a patcher by myself, so I made this one.
-But if you want to support the developer of StartAllBack you can buy it on [this website](https://www.startallback.com/).
+But if you want to support the developer of StartAllBack buy a license [here](https://www.startallback.com/).
 
 ## What does it do?
 
+- It deletes the registry key that tells the software that the trial period as started.
 - Check the hash of `StartAllBackX64.dll` to make sure that the file is the correct one.
 - Make a backup of `StartAllBackX64.dll` in the same folder named `StartAllBackX64.bak`.
-- Stop all instances of `Explorer.exe`
+- Stop all instances of `Explorer.exe` and `StartAllBackCfg.exe`.
 - Patch `StartAllBackX64.dll`
-- Start explorer.exe
+- Start `Explorer.exe`.
 - That's all!
 
 ## The patch
@@ -78,7 +79,18 @@ But if you want to support the developer of StartAllBack you can buy it on [this
 ```
 </details>
 
-> **Note**: The patch is not a keygen, and it will not change the expiration date of the software.
+> **Note**: The patch is not a keygen, and it will not change the expiration date of the software. It just bypasses the license check.
+
+## Registry key
+
+A registry key is created when the software is launched for the first time. This key tells the software that the trial period has started.
+To reset the trial period of 100 days, we need to delete the following key :
+
+```reg
+Ordinateur\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx}
+```
+
+> **Note**: Each time you launch the patcher, the key will be deleted.
 
 ## How to launch it?
 
