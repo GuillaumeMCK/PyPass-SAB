@@ -1,7 +1,5 @@
 import customtkinter as ctk
 
-GITHUB_URL = "https://github.com/GuillaumeMCK/PyPass-SAB"
-
 
 class Controllers(ctk.CTkFrame):
 
@@ -18,9 +16,9 @@ class Controllers(ctk.CTkFrame):
         self.backup_checkbox = ctk.CTkCheckBox(self, text="Backup")
         self.backup_checkbox.grid(row=0, column=0, sticky="w", padx=5, pady=5)
 
-        self.about_btn = self._create_btn("About ℹ", self.about_btn_cmd, 0, 0, "e", 5, 5, )
+        self.about_btn = self._create_btn("Restore 🩹", self.about_btn_cmd, 0, 0, "e", 5, 5, )
         self.checkup_btn = self._create_btn("Checkup 🔎", self.checkup_btn_cmd, 0, 1, "e", 5, 5)
-        self.patch_btn = self._create_btn("Patch 🩹", self.patch_btn_cmd, 0, 2, "e", 5, 5, state="disabled")
+        self.patch_btn = self._create_btn("Patch 💣", self.patch_btn_cmd, 0, 2, "e", 5, 5, state="disabled")
 
         # ============ configure widgets ============
         self.backup_checkbox.select()

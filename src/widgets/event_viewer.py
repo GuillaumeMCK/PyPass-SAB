@@ -10,7 +10,7 @@ class EventViewer(ctk.CTkFrame):
 
     def init_widgets(self) -> None:
         self.text_box = ctk.CTkTextbox(master=self,
-                                       font=("Consolas", 14),
+                                       font=("Consolas", 13),
                                        corner_radius=0,
                                        fg_color=colors["black"],
                                        wrap="word",
