@@ -16,7 +16,10 @@ setup(
     options={
         'build_exe': {
             'include_msvcr': True,
-            'build_exe': output_dir
+            'build_exe': output_dir,
+            'include_files': [
+                'src/assets'
+            ],
         },
     },
 )
