@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 from hashlib import sha1
 from os import path
@@ -8,8 +9,9 @@ from tkinter.filedialog import askopenfilename
 from psutil import process_iter, NoSuchProcess, AccessDenied
 
 from src.datas import PATCHES_REPOSITORY
-from src.datas.patches_repository import create_patch_repo
+from src.datas.patches_repository import create_patch_repo, HKEY_TRIAL_REMINDER
 from src.models import Patch, FileInfo
+from src.regedit import Regedit as reg
 from src.widgets.event_viewer import EventViewer
 
 
@@ -19,7 +21,7 @@ def _get_file_name(path: str) -> str:
 
 class Patcher(object):
     _file_path = "C:/Program Files/StartAllBack/StartAllBackX64.dll"
-    _backup_file_path = ""
+    _backup_file_path = None
     _bypass_hash_not_match = False
 
     def __init__(self, _do_backup_func: any, ev: EventViewer):
@@ -33,6 +35,7 @@ class Patcher(object):
         Check if the file is patched
         :return None
         """
+        self.ev.add_banner("Checkup")
         self.ev.event(f"Searching for {_get_file_name(self._file_path)}... ")
         if path.isfile(self._file_path):
             self.ev.event_done("Found")
@@ -57,10 +60,8 @@ class Patcher(object):
                     self._file_path = ""
         else:
             self.ev.event_error("Not found")
-            self.ev.event("Select the file... ")
-            self._file_path = askopenfilename(filetypes=[("DLL", "*.dll")])
+            self._file_path = self._select_file()
             if self._file_path != "":
-                self.ev.event_done("Selected")
                 self.checkup()
             else:
                 self.ev.event_error("Cancelled")
@@ -102,12 +103,38 @@ class Patcher(object):
                 break
         return _file_info_result
 
+    def reset_trail_reminder(self) -> None:
+        """
+        Reset the registry
+        :return: None
+        """
+        regex = r"\{[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{11}\}"
+
+        self.ev.add_banner("Reset trial reminder")
+        self.ev.event("Deleting registry keys... ")
+        try:
+            sub_keys = reg.get_sub_keys_in_key(reg.get_key(HKEY_TRIAL_REMINDER))
+            matches = [re.search(regex, sub_key) for sub_key in sub_keys]
+            for match in matches:
+                uid = match.group(0)
+                if uid is not None and reg.get_value(HKEY_TRIAL_REMINDER + uid, '') == ('', 1):  # 1 = REG_SZ
+                    reg.delete_key(HKEY_TRIAL_REMINDER + uid)
+                    break
+        except FileNotFoundError:
+            self.ev.event_warning("Not found")
+            return
+        except Exception as e:
+            self.ev.event_error("Error")
+            self.ev.event_error(str(e))
+            return
+        self.ev.event_done("Done")
+
     @staticmethod
     def get_patches(version: str) -> list[Patch]:
         """
         Get the patches for a specific version
         :param version: Version of the patch
-        :return: Patches
+        :return: List of Patch objects
         """
         for infos in PATCHES_REPOSITORY:
             if infos['version'] == version:
@@ -122,23 +149,22 @@ class Patcher(object):
         """
         self.ev.event("Creating backup... ")
         self._backup_file_path = self._file_path + f".{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.bak"
-        if self._write_file(self._backup_file_path, self._read_file(self._file_path)):
-            self.ev.event_done("Done")
+        self._write_file(self._backup_file_path, self._read_file(self._file_path))
 
-    def _kill_process(self, process_name: str) -> None:
+    def _kill_process(self, *process_names: str) -> None:
         """
         Kill a process
         :param process_name: Name of the process
         :return: None
         """
-        self.ev.event(f"Killing {process_name}... ")
-        system(f"taskkill /f /im {process_name}")
+        self.ev.event(f"Killing [{', '.join(process_names)}]... ")
+        system("taskkill /f /im " + " /im ".join(process_names))
         # wait for the process to stop
         for proc in process_iter():
             try:
-                if proc.name() == process_name:
+                if proc.name() in process_names:
                     proc.wait()
-            except (NoSuchProcess, AccessDenied):
+            except (AccessDenied, NoSuchProcess):
                 pass
         self.ev.event_done("Done")
 
@@ -147,53 +173,77 @@ class Patcher(object):
         Patch the file
         :return None
         """
-        self.ev.add_banner("Start patch")
+        self.ev.add_banner("Patching")
         if self.checkup_is_valid:
             if self._do_backup_func():
                 self._create_backup()
             _original_file = self._read_file(self._file_path)
             _patched_file = _original_file
-            self._kill_process("explorer.exe")
+            self._kill_process("explorer.exe", "StartAllBackCfg.exe")
             self.ev.event("Patching... ")
             try:
                 for patch in self.get_patches(self.check_file_result.version):
                     _patched_file = _patched_file[:patch.offset] + patch.bytes + \
                                     _patched_file[patch.offset + len(patch.bytes):]
             except Exception as e:
-                self.ev.event_error("Failed")
                 self.ev.event(f"Error: {e}", color="red")
-                self._restore_backup()
+                self.restore()
                 return
             if self._write_file(self._file_path, _patched_file):
-                self.ev.event_done("Done")
-                self.ev.event("Checking hash... ")
-                if self._get_hash(self._file_path) == self.check_file_result.patched_hash:
-                    self.ev.event_done("Patched")
-                elif not self._bypass_hash_not_match:
-                    self.ev.event_error("Not matching")
-                    self.ev.event("Restoring backup... ")
-                    self._restore_backup()
-                else:
-                    self.ev.event_warning("Not matching (bypassed)")
-                    self.ev.event(f"Backup directory: {self._backup_file_path}")
+                self._check_hash()
             else:
                 self.ev.event_error("Failed")
-            self.ev.event("Start explorer.exe", end="\n")
             system("start explorer.exe")
         else:
             self.ev.event_error("Checkup not valid")
-        self.ev.add_banner("End of patch")
 
-    def _restore_backup(self) -> None:
+    def _check_hash(self):
+        self.ev.event("Checking hash... ")
+        if self._get_hash(self._file_path) == self.check_file_result.patched_hash:
+            self.ev.event_done("Patched")
+        elif not self._bypass_hash_not_match:
+            self.ev.event_error("Not matching")
+            self.restore()
+        else:
+            self.ev.event_warning("Not matching (bypassed)")
+            self.ev.event(f"Backup directory: {self._backup_file_path}")
+
+    def restore(self) -> None:
         """
         Restore the backup of the file
         :return: None
         """
+        self.ev.add_banner("Restore backup")
+        new_path = None
+        if self._backup_file_path is None:
+            while True:
+                new_path = self._select_file()
+                if new_path is None:
+                    return
+                elif self._get_hash(new_path) == self.check_file_result.original_hash:
+                    break
+                else:
+                    self.ev.event_error("Invalid file")
+
+        self._kill_process("explorer.exe", "StartAllBackCfg.exe")
         self.ev.event("Restoring backup... ")
-        if self._write_file(self._file_path, self._read_file(self._backup_file_path)):
-            self.ev.event_done("Done")
-        else:
-            self.ev.event_error("Failed")
+        self._write_file(self._file_path, self._read_file(
+            self._backup_file_path if self._backup_file_path is not None else new_path))
+        system("start explorer.exe")
+
+    def _select_file(self) -> str or None:
+        """
+        Select a file
+        :return: Path of the file
+        """
+        self.ev.event("Selecting file... ")
+        file_path = askopenfilename(title="Select file", filetypes=[("Executable", "*.dll"), ("Executable", "*.bak")],
+                                    initialdir="C:/Program Files/")
+        if file_path == '':
+            self.ev.event_error("Cancelled")
+            return None
+        self.ev.event_done("Done")
+        return file_path
 
     def _write_file(self, file_path: str, data: bytes) -> bool:
         """
@@ -207,6 +257,7 @@ class Patcher(object):
                 remove(file_path)
             with open(file_path, 'wb') as f:
                 f.write(data)
+            self.ev.event_done("Done")
             return True
         except IOError as e:
             self.ev.event_error("Error while writing file : " + str(e))
@@ -218,6 +269,7 @@ class Patcher(object):
         :param path: Path of the file
         :return Data of the file
         """
+        print(path)
         try:
             with open(path, 'rb') as f:
                 return f.read()

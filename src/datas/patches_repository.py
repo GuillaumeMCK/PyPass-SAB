@@ -1,5 +1,6 @@
 from src.models import Patch
 
+HKEY_TRIAL_REMINDER = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CLSID\\"
 PATCHES_REPOSITORY = [
     {
         "version": "3.5.5",
