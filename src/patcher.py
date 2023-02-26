@@ -269,7 +269,6 @@ class Patcher(object):
         :param path: Path of the file
         :return Data of the file
         """
-        print(path)
         try:
             with open(path, 'rb') as f:
                 return f.read()

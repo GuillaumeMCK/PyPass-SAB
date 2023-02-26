@@ -10,7 +10,7 @@ from src.widgets import EventViewer, Controllers
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-HEIGHT = 320
+HEIGHT = 330
 WIDTH = 350
 
 GITHUB_URL = "https://github.com/GuillaumeMCK/PyPass-SAB"

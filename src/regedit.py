@@ -6,6 +6,7 @@ class Regedit(object):
     """
     Simple class to manage the registry
     """
+
     @staticmethod
     def get_value(key: str, sub_key: str) -> tuple[any, int]:
         """
@@ -35,10 +36,7 @@ class Regedit(object):
         :param key: Key to delete
         :return: None
         """
-        try:
-            DeleteKey(HKEY_CURRENT_USER, key)
-        except FileNotFoundError:
-            pass
+        DeleteKey(HKEY_CURRENT_USER, key)
 
     @staticmethod
     def get_key(key: str) -> HKEYType:
@@ -48,8 +46,6 @@ class Regedit(object):
         :return: Key
         """
         return OpenKey(HKEY_CURRENT_USER, key)
-
-
 
     @staticmethod
     def get_sub_keys_in_key(key: HKEYType) -> list[str]:
