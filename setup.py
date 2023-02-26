@@ -10,7 +10,8 @@ pyinstaller_options = [
     "--uac-admin",
     "--icon=src/assets/icon.ico",
     f"--add-data=./env/Lib/site-packages/customtkinter;customtkinter/",
-    "--add-data=./src/assets;/assets/"
+    "--add-data=./src/assets;/assets/",
+    "--exclude-module=PyInstaller"
 ]
 
 # Définition des chemins d'entrée et de sortie pour PyInstaller
