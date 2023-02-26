@@ -112,8 +112,10 @@ py main.py
 To build the project
 
 ```batch
-cd PyPass-SAB
-py setup.py build
+py -m venv env
+env\Scripts\activate.ps1
+pip install -r requirements.txt
+python setup.py build
 ```
 
 ## Disclaimer
