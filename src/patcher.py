@@ -114,14 +114,16 @@ class Patcher(object):
         self.ev.event("Deleting registry keys... ")
         try:
             sub_keys = reg.get_sub_keys_in_key(reg.get_key(HKEY_TRIAL_REMINDER))
-            keys_uid = (search(regex, sub_key)[0] for sub_key in sub_keys if
-                        search(regex, sub_key) is not None)
-
-            if len(list(keys_uid)) > 0:
+            keys_uid = [search(regex, sub_key)[0] for sub_key in sub_keys if
+                        search(regex, sub_key) is not None]
+            if len(keys_uid) > 0:
                 for uid in keys_uid:
                     reg.delete_key(HKEY_TRIAL_REMINDER + uid)
+                self.ev.event_done("Done")
+                return
 
         except FileNotFoundError:
+            self.ev.event_warning("Not found qsc")
             pass
 
         except Exception as e:
