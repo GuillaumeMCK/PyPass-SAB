@@ -1,8 +1,8 @@
-import re
+import subprocess as sp
 from datetime import datetime
 from hashlib import sha1
-from os import path
-from os import system, remove
+from os import path, remove
+from re import search
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
@@ -114,20 +114,21 @@ class Patcher(object):
         self.ev.event("Deleting registry keys... ")
         try:
             sub_keys = reg.get_sub_keys_in_key(reg.get_key(HKEY_TRIAL_REMINDER))
-            matches = [re.search(regex, sub_key) for sub_key in sub_keys]
-            for match in matches:
-                uid = match.group(0)
-                if uid is not None and reg.get_value(HKEY_TRIAL_REMINDER + uid, '') == ('', 1):  # 1 = REG_SZ
+            keys_uid = (search(regex, sub_key)[0] for sub_key in sub_keys if
+                        search(regex, sub_key) is not None)
+
+            if len(list(keys_uid)) > 0:
+                for uid in keys_uid:
                     reg.delete_key(HKEY_TRIAL_REMINDER + uid)
-                    break
+
         except FileNotFoundError:
-            self.ev.event_warning("Not found")
-            return
+            pass
+
         except Exception as e:
             self.ev.event_error("Error")
             self.ev.event_error(str(e))
             return
-        self.ev.event_done("Done")
+        self.ev.event_warning("Not found")
 
     @staticmethod
     def get_patches(version: str) -> list[Patch]:
@@ -158,7 +159,7 @@ class Patcher(object):
         :return: None
         """
         self.ev.event(f"Killing [{', '.join(process_names)}]... ")
-        system("taskkill /f /im " + " /im ".join(process_names))
+        sp.run(f"taskkill /f /im {' /im '.join(process_names)}", shell=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL)
         # wait for the process to stop
         for proc in process_iter():
             try:
@@ -193,7 +194,7 @@ class Patcher(object):
                 self._check_hash()
             else:
                 self.ev.event_error("Failed")
-            system("start explorer.exe")
+            self._start_explorer()
         else:
             self.ev.event_error("Checkup not valid")
 
@@ -229,7 +230,10 @@ class Patcher(object):
         self.ev.event("Restoring backup... ")
         self._write_file(self._file_path, self._read_file(
             self._backup_file_path if self._backup_file_path is not None else new_path))
-        system("start explorer.exe")
+        self._start_explorer()
+
+    def _start_explorer(self):
+        sp.run("start explorer.exe", shell=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL)
 
     def _select_file(self) -> str or None:
         """
