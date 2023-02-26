@@ -1,4 +1,6 @@
+import sys
 import webbrowser as wb
+from os import path
 
 import customtkinter as ctk
 from PIL import Image
@@ -18,9 +20,12 @@ GITHUB_URL = "https://github.com/GuillaumeMCK/PyPass-SAB"
 
 class App(ctk.CTk):
 
-    def __init__(self, is_compiled: bool = False):
+    def __init__(self, is_compiled: bool = getattr(sys, 'frozen', False)):
         super().__init__()
         self.is_compiled = is_compiled
+        self.assets_path = "src\\assets" if not self.is_compiled else path.join(sys._MEIPASS, "assets")
+        self.icon_path = path.join(self.assets_path, "icon.ico")
+        self.iconbitmap(self.icon_path)
         self.setup_widgets()
         self.patcher = Patcher(self.controllers.backup_checkbox_state, self.event_viewer)
         self.after(300, self.checkup_btn_cmd)  # wait for the window
@@ -39,7 +44,7 @@ class App(ctk.CTk):
         self.controllers = Controllers(self, self.restore_btn_cmd, self.patch_btn_cmd, self.checkup_btn_cmd)
         self.controllers.grid(row=1, column=0, sticky="we", padx=10, pady=10)  # sticky="we" to stretch horizontally
 
-        gh_logo = ctk.CTkImage(dark_image=Image.open("src/assets/github.png"))
+        gh_logo = ctk.CTkImage(dark_image=Image.open(path.join(self.assets_path, "github.png")))
         self.gh_button = ctk.CTkButton(self, text="", image=gh_logo, command=self.about_btn_cmd, width=32,
                                        height=32, fg_color=colors["black"])
         self.gh_button.place(relx=1.0, rely=0.0, anchor="ne", x=-5, y=5)
