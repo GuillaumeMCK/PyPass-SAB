@@ -1,25 +1,20 @@
-from cx_Freeze import setup, Executable
+import PyInstaller.__main__ as pyi
 
-target = Executable(
-    base="Win32GUI",
-    script="./main.py",
-)
+# Définition des options pour PyInstaller
+pyinstaller_options = [
+    "--name=PyPass-SAB",
+    "--noconfirm",
+    "--onefile",
+    "--windowed",
+    "--noconsole",
+    "--uac-admin",
+    "--icon=src/assets/icon.ico",
+    f"--add-data=./env/Lib/site-packages/customtkinter;customtkinter/",
+    "--add-data=./src/assets;/assets/"
+]
 
-output_dir = "./build"
+# Définition des chemins d'entrée et de sortie pour PyInstaller
+input_path = "main.py"
 
-setup(
-    name='PyPass-SAB',
-    version='0.1',
-    description='Patcher for StartAllBack',
-    executables=[target],
-    author='GuillaumeMCK',
-    options={
-        'build_exe': {
-            'include_msvcr': True,
-            'build_exe': output_dir,
-            'include_files': [
-                'src/assets'
-            ],
-        },
-    },
-)
+# Appel de PyInstaller avec les options et les chemins définis
+pyi.run(pyi_args=pyinstaller_options + [str(input_path)])
