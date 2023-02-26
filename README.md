@@ -95,7 +95,7 @@ Ordinateur\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\
 ## How to launch it?
 
 **From release page** : <br/>
-Download the latest [release](https://github.com/GuillaumeMCK/PyPass-SAB/releases), unzip it and launch the file "main.exe"
+Download the latest [release](https://github.com/GuillaumeMCK/PyPass-SAB/releases), and run the file.
 <br><br/>
 **From sources** : <br/>
 Follow the instructions below <br/>
