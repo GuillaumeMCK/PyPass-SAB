@@ -123,7 +123,7 @@ class Patcher(object):
                 return
 
         except FileNotFoundError:
-            self.ev.event_warning("Not found qsc")
+            self.ev.event_warning("Not found")
             pass
 
         except Exception as e:
