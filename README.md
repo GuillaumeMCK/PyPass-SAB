@@ -86,7 +86,7 @@ A registry key is created when the software is launched for the first time. This
 To reset the trial period of 100 days, we need to delete the following key :
 
 ```reg
-\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx}
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx}
 ```
 
 > **Note**: Each time you launch the patcher, the key will be deleted.
