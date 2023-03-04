@@ -11,7 +11,7 @@
 </div>
 <br/>
 
-> PyPass-SAB is a patcher write in python that allows you to bypass the **100 days remaining limit**
+> PyPass-SAB is a patcher written in python that allows bypassing and resetting the **100 days remaining limit** 
 > of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.1**. <br/>
 > <br/>
 <div align="center">
@@ -20,9 +20,8 @@
 <br>
 
 ## Why did I make this?
-Because it's bored to reinstall StartAllBack every 100 days and I don't trust
-the "cracks" on the internet 🤷‍♂.<br/>
-I also wanted to make a patcher by myself, so I made this one.
+Because it's boring to reinstall StartAllBack every 100 days. 
+And especially for fun cause I wanted to make a patcher by myself, so I made this one. 
 But if you want to support the developer of StartAllBack buy a license [here](https://www.startallback.com/).
 
 ## What does it do?
@@ -79,7 +78,7 @@ But if you want to support the developer of StartAllBack buy a license [here](ht
 ```
 </details>
 
-> **Note**: The patch is not a keygen, and it will not change the expiration date of the software. It just bypasses the license check.
+> **Note**: The patch is not a keygen, and it will not change the software's expiration date. It just bypasses the license check.
 
 ## Registry key
 
@@ -103,22 +102,24 @@ Follow the instructions below <br/>
 ```batch
 git clone https://github.com/GuillaumeMCK/PyPass-SAB.git
 cd PyPass-SAB
+py -m venv venv
+venv\Scripts\activate.ps1
 pip install -r requirements.txt
 py main.py
 ```
 
 ## Build
 
-To build the project
+To create an executable for windows :
 
 ```batch
-py -m venv env
+py -m venv venv
 env\Scripts\activate.ps1
 pip install -r requirements.txt
-python setup.py build
+py setup.py
 ```
 
 ## Disclaimer
 > **Warning**:
-> I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED OR ANY ILLEGAL USAGE OF THIS SCRIPT.
+> I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED OR ANY ILLEGAL USAGE OF THIS APP.
 > USE IT AT YOUR OWN RISK.
