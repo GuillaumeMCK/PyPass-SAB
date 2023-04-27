@@ -12,7 +12,7 @@
 <br/>
 
 > PyPass-SAB is a patcher written in python that allows bypassing and resetting the **100 days remaining limit** 
-> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.2**. <br/>
+> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.4**. <br/>
 > <br/>
 <div align="center">
     <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/banner.png" width="500">
@@ -22,7 +22,7 @@
 ## Why did I make this?
 Because it's boring to reinstall StartAllBack every 100 days. 
 And especially for fun cause I wanted to make a patcher by myself, so I made this one. 
-But if you want to support the developer of StartAllBack buy a license [here](https://www.startallback.com/).
+But if you want to support the developer of StartAllBack buy a licence [here](https://www.startallback.com/).
 
 ## What does it do?
 
