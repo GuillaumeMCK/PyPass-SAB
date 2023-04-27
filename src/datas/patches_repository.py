@@ -50,14 +50,35 @@ PATCHES_REPOSITORY = [
         ]
     },
     {
-        'version': 'v3.6.2', 'original_hash': 'b0ff7156c7d1d48a98c5f0751ad762b68e677c74',
+        'version': 'v3.6.2',
+        'original_hash': 'b0ff7156c7d1d48a98c5f0751ad762b68e677c74',
         'patched_hash': '0962f3b1ea42cadda3e0ab158415e0074a8eea2f',
         'patches': [
             {'offset': 4972, 'bytes': b'gH\xc7\x01\x01\x00\x00\x00'},
             {'offset': 4981, 'bytes': b'\xc7\xc0\x01\x00\x00\x00\xc3'},
             {'offset': 5480, 'bytes': b'\xb8\x00\x00\x00\x00\xc3'}
         ]
-     }
+    },
+    {
+        'version': 'v3.6.3',
+        'original_hash': 'd089c96a4d562c775cf982b2d805d2ff500b0be5',
+        'patched_hash': '9de5fce9fef93a45866fa66b6b445facb295c676',
+        'patches': [
+            {'offset': 4972, 'bytes': b'gH\xc7\x01\x01\x00\x00\x00'},
+            {'offset': 4981, 'bytes': b'\xc7\xc0\x01\x00\x00\x00\xc3'},
+            {'offset': 5480, 'bytes': b'\xb8\x00\x00\x00\x00\xc3'}
+        ]
+    },
+    {
+        'version': 'v3.6.4',
+        'original_hash': '64ffbe4f16c565d3362ea3f09b9d0468eafbd368',
+        'patched_hash': 'd2a16d1375f5f63145da96331307dc8cdd48beaa',
+        'patches': [
+            {'offset': 4972, 'bytes': b'gH\xc7\x01\x01\x00\x00\x00'},
+            {'offset': 4981, 'bytes': b'\xc7\xc0\x01\x00\x00\x00\xc3'},
+            {'offset': 5480, 'bytes': b'\xb8\x00\x00\x00\x00\xc3'}
+        ]
+    }
 ]
 
 
