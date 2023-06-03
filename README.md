@@ -12,7 +12,7 @@
 <br/>
 
 > PyPass-SAB is a patcher written in python that allows bypassing and resetting the **100 days remaining limit** 
-> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.4**. <br/>
+> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.5**. <br/>
 > <br/>
 <div align="center">
     <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/banner.png" width="500">

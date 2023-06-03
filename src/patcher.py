@@ -209,7 +209,7 @@ class Patcher(object):
             self.restore()
         else:
             self.ev.event_warning("Not matching (bypassed)")
-            self.ev.event(f"Backup directory: {self._backup_file_path}")
+            self.ev.event(f"Backup directory: {self._backup_file_path}\n")
 
     def restore(self) -> None:
         """
