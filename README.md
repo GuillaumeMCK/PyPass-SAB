@@ -20,6 +20,7 @@
 <br>
 
 ## Why did I make this?
+
 Because it's boring to reinstall StartAllBack every 100 days. 
 And especially for fun cause I wanted to make a patcher by myself, so I made this one. 
 But if you want to support the developer of StartAllBack buy a licence [here](https://www.startallback.com/).
@@ -116,10 +117,11 @@ To create an executable for windows :
 py -m venv venv
 env\Scripts\activate.ps1
 pip install -r requirements.txt
-py setup.py
+py build.py
 ```
 
 ## Disclaimer
+
 > **Warning**:
 > I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED OR ANY ILLEGAL USAGE OF THIS APP.
 > USE IT AT YOUR OWN RISK.
