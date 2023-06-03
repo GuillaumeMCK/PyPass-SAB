@@ -103,8 +103,8 @@ Follow the instructions below <br/>
 ```batch
 git clone https://github.com/GuillaumeMCK/PyPass-SAB.git
 cd PyPass-SAB
-py -m venv venv
-venv\Scripts\activate.ps1
+py -m venv env
+env\Scripts\activate.ps1
 pip install -r requirements.txt
 py main.py
 ```
@@ -114,7 +114,7 @@ py main.py
 To create an executable for windows :
 
 ```batch
-py -m venv venv
+py -m venv env
 env\Scripts\activate.ps1
 pip install -r requirements.txt
 py build.py

@@ -1,4 +1,6 @@
 import PyInstaller.__main__ as pyi
+from os import name
+from pathlib import Path
 
 pyinstaller_options = [
     "--name=PyPass-SAB",
@@ -8,11 +10,11 @@ pyinstaller_options = [
     "--noconsole",
     "--uac-admin",
     "--icon=src/assets/icon.ico",
-    "--add-data=./env/Lib/site-packages/customtkinter;customtkinter/",
-    "--add-data=./src/assets;/assets/",
-    "--exclude-module=PyInstaller"
+    "--add-data=src/assets;/assets/",
+    "--add-data=env/Lib/site-packages/customtkinter;customtkinter/",
+    "--exclude-module=PyInstaller",
 ]
 
-input_path = "main.py"
+script_name = "main.py"
 
-pyi.run(pyi_args=pyinstaller_options + [str(input_path)])
+pyi.run(pyi_args=[str(script_name)] + pyinstaller_options)
