@@ -1,6 +1,4 @@
 import PyInstaller.__main__ as pyi
-from os import name
-from pathlib import Path
 
 pyinstaller_options = [
     "--name=PyPass-SAB",
