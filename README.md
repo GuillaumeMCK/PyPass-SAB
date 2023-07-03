@@ -11,9 +11,10 @@
 </div>
 <br/>
 
-> PyPass-SAB is a patcher written in python that allows bypassing and resetting the **100 days remaining limit** 
-> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.5**. <br/>
-> <br/>
+> PyPass-SAB is a patcher written in python that allows bypassing and resetting the **100 days remaining limit**
+> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.6.X**. Other versions may work but are not
+> tested.<br/>
+
 <div align="center">
     <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/banner.png" width="500">
 </div>
@@ -21,8 +22,8 @@
 
 ## Why did I make this?
 
-Because it's boring to reinstall StartAllBack every 100 days. 
-And especially for fun cause I wanted to make a patcher by myself, so I made this one. 
+Because it's boring to reinstall StartAllBack every 100 days.
+And especially for fun because I wanted to make a patcher by myself, so I made this one.
 But if you want to support the developer of StartAllBack buy a licence [here](https://www.startallback.com/).
 
 ## What does it do?
@@ -38,7 +39,7 @@ But if you want to support the developer of StartAllBack buy a licence [here](ht
 ## The patch
 
 <details>
-  <summary>Ordinal_101 Function</summary>
+  <summary>CompareFileTime Function</summary>
 
 ```asm
                       *************************************************************
@@ -54,10 +55,11 @@ But if you want to support the developer of StartAllBack buy a licence [here](ht
            00  00
 180002169  c3              RET
 ```
+
 </details>
 
 <details>
-  <summary>Ordinal_102 Function</summary>
+  <summary>CheckLicense Function</summary>
 
 ```asm
                       *************************************************************
@@ -77,13 +79,16 @@ But if you want to support the developer of StartAllBack buy a licence [here](ht
            00  00
 180001f74  c3              RET
 ```
+
 </details>
 
-> **Note**: The patch is not a keygen, and it will not change the software's expiration date. It just bypasses the license check.
+> **Note**: The patch is not a keygen, and it will not change the software's expiration date. It just bypasses the
+> licence check.
 
 ## Registry key
 
-A registry key is created when the software is launched for the first time. This key tells the software that the trial period has started.
+A registry key is created when the software is launched for the first time. This key tells the software that the trial
+period has started.
 To reset the trial period of 100 days, we need to delete the following key :
 
 ```reg
