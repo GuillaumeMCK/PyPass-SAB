@@ -1,0 +1,57 @@
+
+FUNCS_FOOTPRINTS: dict[str, bytes] = {
+    "CheckLicense": b'\x48\x89\x5c\x24\x08\x55\x56\x57\x48\x8d\xac\x24\x70\xff\xff\xff\x48\x81\xec\x90\x01\x00\x00\x48'
+                    b'\x8b\xf1\x48\x8d\x4d\x20\xe8\xd9\xfe\xff\xff\x33\xdb\x48\x8b\xf8\x48\x85\xc0\x0f\x84\xae\x00\x00'
+                    b'\x00\x33\xd2\x48\x8d\x4c\x24\x30\x41\xb8\x80\x00\x00\x00\xe8\xd3\x78\x07\x00\x48\x8d\x85\xc0\x00'
+                    b'\x00\x00\xc7\x85\xb8\x00\x00\x00\x80\x00\x00\x00\x41\xb9\x01\x01\x00\x00\x48\x89\x44\x24\x20\x45',
+
+    "CompareFileTime": b'\x48\x89\x5c\x24\x18\x57\x48\x83\xec\x30\x48\x8d\x4c\x24\x48\xe8\xe4\xfe\xff\xff\x48\x8d\x4c'
+                       b'\x24\x40\xff\x15'
+}
+
+PATCHED_FUNCS_FOOTPRINTS: dict[str, bytes] = {
+    "CheckLicense": b'\x48\xc7\x01\x01\x00\x00\x00\xb8\x01\x00\x00\x00\xc3',
+    "CompareFileTime": b'\x48\x89\x5c\x24\x18\xb8\x00\x00\x00\x00\xc3'
+}
+
+
+def get_funcs_names() -> list[str]:
+    """
+    Get the names of the functions to search
+    :return: List of the names of the functions
+    """
+    return list(FUNCS_FOOTPRINTS.keys())
+
+
+def get_patch_funcs_names() -> list[str]:
+    """
+    Get the names of the functions to search in the patched file
+    :return: List of the names of the functions
+    """
+    return list(PATCHED_FUNCS_FOOTPRINTS.keys())
+
+
+def get_offset_from_footprint(file_path: str, footprint: bytes) -> int:
+    """
+    Find the offset of the footprint in the file.
+    :param file_path: Path to the file to search in
+    :param footprint: Footprint to search
+    :return: Offset of the footprint in the file, or -1 if not found or file cannot be opened
+    """
+    print("Searching for footprint in file:", file_path)
+    print("Footprint:", footprint.hex())
+    try:
+        with open(file_path, 'rb') as file:
+            file_content = file.read()
+            try:
+                offset = file_content.index(footprint)
+                print("Footprint found at offset:", offset)
+                return offset
+            except ValueError:
+                print("Footprint not found in the file.")
+                return -1
+    except IOError:
+        print("Error opening the file:", file_path)
+        return -1
+
+

@@ -1,18 +1,38 @@
+import ctypes
 import subprocess as sp
+import sys
+from ctypes import wintypes
 from datetime import datetime
 from hashlib import sha1
 from os import path, remove
 from re import search
-from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
 from psutil import process_iter, NoSuchProcess, AccessDenied
 
-from src.datas import PATCHES_REPOSITORY
+from src.datas import *
+from src.datas.functions_footprint import PATCHED_FUNCS_FOOTPRINTS
 from src.datas.patches_repository import create_patch_repo, HKEY_TRIAL_REMINDER
 from src.models import Patch, FileInfo
 from src.regedit import Regedit as reg
 from src.widgets.event_viewer import EventViewer
+
+# Define necessary types
+CHAR = ctypes.c_char
+DWORD = wintypes.DWORD
+HGLOBAL = wintypes.HGLOBAL
+
+# Function prototype
+GetSystemFirmwareTable: ctypes.WINFUNCTYPE = ctypes.windll.kernel32.GetSystemFirmwareTable
+GetSystemFirmwareTable.restype = DWORD
+GetSystemFirmwareTable.argtypes = [DWORD, DWORD, wintypes.LPVOID, DWORD]
+
+GlobalAlloc: ctypes.WINFUNCTYPE = ctypes.windll.kernel32.GlobalAlloc
+GlobalAlloc.restype = HGLOBAL
+GlobalAlloc.argtypes = [wintypes.UINT, wintypes.SIZE]
+
+# Constants
+RSMB: DWORD = DWORD(int.from_bytes(b"RSMB", byteorder="big"))
 
 
 def _get_file_name(path: str) -> str:
@@ -22,19 +42,20 @@ def _get_file_name(path: str) -> str:
 class Patcher(object):
     _file_path = "C:/Program Files/StartAllBack/StartAllBackX64.dll"
     _backup_file_path = None
-    _bypass_hash_not_match = False
 
     def __init__(self, _do_backup_func: any, ev: EventViewer):
         self.ev = ev
         self.checkup_is_valid = False
         self._do_backup_func = _do_backup_func
         self.check_file_result = FileInfo()
+        self.already_patched = False
 
     def checkup(self):
         """
-        Check if the file is patched
+        Check if the file is patched and if it can be patched
         :return None
         """
+        self.already_patched = False
         self.ev.add_banner("Checkup")
         self.ev.event(f"Searching for {_get_file_name(self._file_path)}... ")
         if path.isfile(self._file_path):
@@ -46,18 +67,37 @@ class Patcher(object):
                 self.checkup_is_valid = True
             elif self.check_file_result.is_patched:
                 self.ev.event_done("Patched")
-            elif self._bypass_hash_not_match:
-                self.ev.event_warning("Not matching (bypassed)")
-                self.checkup_is_valid = True
             else:
-                self.ev.event_error("Not matching")
-                if messagebox.askyesno(
-                        "File not matching",
-                        "The file is not matching the original file. Do you want to patch it anyway ?"):
-                    self._bypass_hash_not_match = True
+                self.ev.event_warning("Not matching")
+                self.ev.add_banner("Check with functions footprint")
+                for func_name in self.check_file_result.funcs_offset.keys():
+                    self.ev.event(f"Checking {func_name}... ")
+                    self.check_file_result.funcs_offset[func_name] = get_offset_from_footprint(
+                        self._file_path,
+                        FUNCS_FOOTPRINTS[func_name]
+                    )
+                    if self.check_file_result.funcs_offset[func_name] is None or \
+                            self.check_file_result.funcs_offset[func_name] == -1:
+                        # Check if the function is already patched
+                        already_patched = get_offset_from_footprint(
+                            self._file_path,
+                            PATCHED_FUNCS_FOOTPRINTS[func_name]
+                        )
+                        if already_patched == -1:
+                            self.ev.event_error("Not found")
+                        else:
+                            self.ev.event_done("Patched")
+                            self.already_patched = True
+                    else:
+                        self.ev.event_warning("Found")
+
+                if self.check_file_result.haveFuncsOffset():
+                    self.ev.event_done("All functions found")
+                    self.checkup_is_valid = True
+                elif self.already_patched:
+                    self.ev.event_done("All functions patched")
                 else:
                     self.checkup_is_valid = False
-                    self._file_path = ""
         else:
             self.ev.event_error("Not found")
             self._file_path = self._select_file()
@@ -103,12 +143,66 @@ class Patcher(object):
                 break
         return _file_info_result
 
+    def get_remaining_trial_days_key_head(self) -> str:
+        """
+        Get the head of the remaining trial days key
+        :return: Head of the remaining trial days key
+        """
+        result: str = "00000000-0000"
+
+        firmware_table_size: int = GetSystemFirmwareTable(RSMB, 0, None, 0)
+
+        if firmware_table_size != 0:
+            firmware_table_buffer: int = GlobalAlloc(0x40, wintypes.SIZE(firmware_table_size + 8))
+            firmware_table_ptr: ctypes.c_void_p = ctypes.c_void_p(firmware_table_buffer)
+
+            GetSystemFirmwareTable(RSMB, 0, firmware_table_ptr, firmware_table_size)
+
+            index = 0
+            while index + 1 < firmware_table_size:
+                current_index: int = index
+                buffer_ptr: ctypes.POINTER(CHAR) = ctypes.cast(
+                    firmware_table_ptr.value + 8 + current_index, ctypes.POINTER(CHAR))
+                entry: bytes = buffer_ptr.contents.value
+
+                if entry == b'\x01':
+                    if current_index != 0:
+                        entry_ptr: ctypes.POINTER(ctypes.c_ulonglong) = ctypes.cast(
+                            firmware_table_ptr.value + current_index + 8 + 8, ctypes.POINTER(ctypes.c_ulonglong))
+                        entry_value: int = entry_ptr.contents.value
+
+                        first_part: int = entry_value & 0xFFFFFFFF
+                        second_part: int = (entry_value >> 0x30) & 0xFFFF
+
+                        result = "%08x-%04x" % (first_part, second_part)
+
+                    break
+
+                b_value: CHAR = buffer_ptr[1]
+
+                if b_value == 0:
+                    break
+
+                updated_index: int = current_index + int.from_bytes(b_value, byteorder=sys.byteorder)
+
+                while True:
+                    current_index = len(ctypes.string_at(firmware_table_ptr.value + 8 + updated_index))
+                    if current_index == 0:
+                        break
+                    updated_index = updated_index + current_index + 1
+                index = updated_index + 1
+
+        print(result)
+
+        return result
+
     def reset_trail_reminder(self) -> None:
         """
         Reset the registry
         :return: None
         """
-        regex = r"\{[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{11}\}"
+        key_head = self.get_remaining_trial_days_key_head()
+        regex = r"\{" + key_head + r"\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{11}\}"
 
         self.ev.add_banner("Reset trial reminder")
         self.ev.event("Deleting registry keys... ")
@@ -133,16 +227,26 @@ class Patcher(object):
         self.ev.event_warning("Not found")
 
     @staticmethod
-    def get_patches(version: str) -> list[Patch]:
+    def get_patches(fileInfo: FileInfo) -> list[Patch]:
         """
         Get the patches for a specific version
-        :param version: Version of the patch
+        :param fileInfo:
         :return: List of Patch objects
         """
-        for infos in PATCHES_REPOSITORY:
-            if infos['version'] == version:
-                for patch in infos['patches']:
-                    yield Patch(offset=patch['offset'], bytes=patch['bytes'])
+        if not fileInfo.haveFuncsOffset:
+            for infos in PATCHES_REPOSITORY:
+                if infos['version'] == fileInfo.version:
+                    for patch in infos['patches']:
+                        yield Patch(offset=patch['offset'], bytes=patch['bytes'])
+        else:
+            for key, value in fileInfo.funcs_offset.items():
+                offset = value
+                patch = PATCHED_FUNCS_FOOTPRINTS[key]
+                if offset == -1 or patch is None:
+                    raise Exception("Invalid offset or patch is None\n" +
+                                    "offset: " + str(offset) + "\n" +
+                                    "patch: " + str(patch) + "\n")
+                yield Patch(offset=offset, bytes=patch)
         return []
 
     def _create_backup(self) -> None:
@@ -176,8 +280,10 @@ class Patcher(object):
         Patch the file
         :return None
         """
+        print("PATCHING")
         self.ev.add_banner("Patching")
         if self.checkup_is_valid:
+            print("CHECKUP IS VALID")
             if self._do_backup_func():
                 self._create_backup()
             _original_file = self._read_file(self._file_path)
@@ -185,15 +291,18 @@ class Patcher(object):
             self._kill_process("explorer.exe", "StartAllBackCfg.exe")
             self.ev.event("Patching... ")
             try:
-                for patch in self.get_patches(self.check_file_result.version):
+                for patch in self.get_patches(self.check_file_result):
+                    print(patch.offset, patch.bytes)
                     _patched_file = _patched_file[:patch.offset] + patch.bytes + \
                                     _patched_file[patch.offset + len(patch.bytes):]
             except Exception as e:
                 self.ev.event(f"Error: {e}", color="red")
                 self.restore()
                 return
+
             if self._write_file(self._file_path, _patched_file):
-                self._check_hash()
+                if not self.check_file_result.haveFuncsOffset():
+                    self._check_hash()
             else:
                 self.ev.event_error("Failed")
             self._start_explorer()
@@ -204,12 +313,9 @@ class Patcher(object):
         self.ev.event("Checking hash... ")
         if self._get_hash(self._file_path) == self.check_file_result.patched_hash:
             self.ev.event_done("Patched")
-        elif not self._bypass_hash_not_match:
+        else:
             self.ev.event_error("Not matching")
             self.restore()
-        else:
-            self.ev.event_warning("Not matching (bypassed)")
-            self.ev.event(f"Backup directory: {self._backup_file_path}\n")
 
     def restore(self) -> None:
         """
@@ -223,10 +329,7 @@ class Patcher(object):
                 new_path = self._select_file()
                 if new_path is None:
                     return
-                elif self._get_hash(new_path) == self.check_file_result.original_hash:
-                    break
-                else:
-                    self.ev.event_error("Invalid file")
+                break
 
         self._kill_process("explorer.exe", "StartAllBackCfg.exe")
         self.ev.event("Restoring backup... ")
