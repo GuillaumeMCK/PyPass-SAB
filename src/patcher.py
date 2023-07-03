@@ -92,10 +92,10 @@ class Patcher(object):
                         self.ev.event_warning("Found")
 
                 if self.check_file_result.haveFuncsOffset():
-                    self.ev.event_done("All functions found")
+                    self.ev.event_done("All functions are found")
                     self.checkup_is_valid = True
                 elif self.already_patched:
-                    self.ev.event_done("All functions patched")
+                    self.ev.event_done("All functions are patched")
                 else:
                     self.checkup_is_valid = False
         else:
