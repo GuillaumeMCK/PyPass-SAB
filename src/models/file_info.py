@@ -1,5 +1,5 @@
-from src.models.base_model import BaseModel
 from src.datas import get_funcs_names
+from src.models.base_model import BaseModel
 
 
 class FileInfo(BaseModel):

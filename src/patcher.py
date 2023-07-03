@@ -191,9 +191,6 @@ class Patcher(object):
                         break
                     updated_index = updated_index + current_index + 1
                 index = updated_index + 1
-
-        print(result)
-
         return result
 
     def reset_trail_reminder(self) -> None:
@@ -280,10 +277,8 @@ class Patcher(object):
         Patch the file
         :return None
         """
-        print("PATCHING")
         self.ev.add_banner("Patching")
         if self.checkup_is_valid:
-            print("CHECKUP IS VALID")
             if self._do_backup_func():
                 self._create_backup()
             _original_file = self._read_file(self._file_path)
@@ -292,7 +287,6 @@ class Patcher(object):
             self.ev.event("Patching... ")
             try:
                 for patch in self.get_patches(self.check_file_result):
-                    print(patch.offset, patch.bytes)
                     _patched_file = _patched_file[:patch.offset] + patch.bytes + \
                                     _patched_file[patch.offset + len(patch.bytes):]
             except Exception as e:

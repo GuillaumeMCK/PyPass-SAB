@@ -1,4 +1,3 @@
-
 FUNCS_FOOTPRINTS: dict[str, bytes] = {
     "CheckLicense": b'\x48\x89\x5c\x24\x08\x55\x56\x57\x48\x8d\xac\x24\x70\xff\xff\xff\x48\x81\xec\x90\x01\x00\x00\x48'
                     b'\x8b\xf1\x48\x8d\x4d\x20\xe8\xd9\xfe\xff\xff\x33\xdb\x48\x8b\xf8\x48\x85\xc0\x0f\x84\xae\x00\x00'
@@ -38,20 +37,13 @@ def get_offset_from_footprint(file_path: str, footprint: bytes) -> int:
     :param footprint: Footprint to search
     :return: Offset of the footprint in the file, or -1 if not found or file cannot be opened
     """
-    print("Searching for footprint in file:", file_path)
-    print("Footprint:", footprint.hex())
     try:
         with open(file_path, 'rb') as file:
             file_content = file.read()
             try:
                 offset = file_content.index(footprint)
-                print("Footprint found at offset:", offset)
                 return offset
             except ValueError:
-                print("Footprint not found in the file.")
                 return -1
     except IOError:
-        print("Error opening the file:", file_path)
         return -1
-
-

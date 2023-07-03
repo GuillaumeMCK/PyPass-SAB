@@ -1,4 +1,5 @@
 import customtkinter as ctk
+
 from src.colors import colors
 
 
