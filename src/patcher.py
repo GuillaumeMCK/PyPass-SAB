@@ -212,11 +212,8 @@ class Patcher(object):
                     reg.delete_key(HKEY_TRIAL_REMINDER + uid)
                 self.ev.event_done("Done")
                 return
-
         except FileNotFoundError:
-            self.ev.event_warning("Not found")
             pass
-
         except Exception as e:
             self.ev.event_error("Error")
             self.ev.event_error(str(e))
