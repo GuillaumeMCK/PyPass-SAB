@@ -82,7 +82,7 @@ But if you want to support the developer of StartAllBack buy a licence [here](ht
 
 </details>
 
-> **Note**: The patch is not a keygen, and it will not change the software's expiration date. It just bypasses the
+> **Note**: The patch will not change the software's expiration date. It just bypasses the
 > licence check.
 
 ## Registry key
