@@ -33,6 +33,12 @@ class EventViewer(ctk.CTkFrame):
     def event_done(self, msg="Done", end="\n") -> None:
         self.event(msg, "green", end)
 
+    def event_info(self, msg="Info", end="\n") -> None:
+        self.event(msg, "yellow", end)
+
+    def event_loading(self, msg="Loading", end="\n") -> None:
+        self.event(msg, "pink", end)
+
     def event_warning(self, msg="Warning", end="\n") -> None:
         self.event(msg, "orange", end)
 
@@ -41,3 +47,16 @@ class EventViewer(ctk.CTkFrame):
 
     def add_banner(self, msg="", color="white", end="\n") -> None:
         self.event(msg.center(42, "-"), color, end)
+
+    def clear(self):
+        """
+        Clear all text in the text box.
+        """
+        self.text_box.configure(state="normal")  # Permet de modifier la boîte de texte
+        self.text_box.delete("1.0", "end")       # Supprime tout le contenu
+        self.text_box.configure(state="disabled")  # Réactive l'état "disabled" pour empêcher la modification
+        self.add_banner("-")
+        self.event_info("            StartAllPatch v0.8.3")
+        self.event_info("  This Patch is compatible with SAB 3.x.x.")
+        self.add_banner("-")
+        self.event("\n")

@@ -1,0 +1,7 @@
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\UpdateCheckBlocker.pdb
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\D3DCompiler_47_cor3.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\PenImc_cor3.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\PresentationNative_cor3.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\vcruntime140_cor3.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\wpfgfx_cor3.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\build\UpdateCheckBlocker.exe

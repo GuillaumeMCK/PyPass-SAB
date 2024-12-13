@@ -201,6 +201,11 @@ class Patcher(object):
         key_head = self.get_remaining_trial_days_key_head()
         regex = r"\{" + key_head + r"\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{11}\}"
 
+        self.ev.add_banner("-")
+        self.ev.event_info("            StartAllPatch v0.8.3")
+        self.ev.event_info("  This Patch is compatible with SAB 3.x.x.")
+        self.ev.add_banner("-")
+        self.ev.event("\n")
         self.ev.add_banner("Reset trial reminder")
         self.ev.event("Deleting registry keys... ")
         try:
@@ -275,6 +280,7 @@ class Patcher(object):
         :return None
         """
         self.ev.add_banner("Patching")
+        self.ev.event_loading(f"Loading, Please Wait... ")
         if self.checkup_is_valid:
             if self._do_backup_func():
                 self._create_backup()
@@ -298,7 +304,7 @@ class Patcher(object):
                 self.ev.event_error("Failed")
             self._start_explorer()
         else:
-            self.ev.event_error("Checkup not valid")
+            self.ev.event_error("Checkup not valid (The program is already patched)")
 
     def _check_hash(self):
         self.ev.event("Checking hash... ")

@@ -1,0 +1,15 @@
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\bin\Debug\net6.0-windows\UpdateCheckBlocker.exe
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\bin\Debug\net6.0-windows\UpdateCheckBlocker.deps.json
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\bin\Debug\net6.0-windows\UpdateCheckBlocker.runtimeconfig.json
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\bin\Debug\net6.0-windows\UpdateCheckBlocker.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\bin\Debug\net6.0-windows\UpdateCheckBlocker.pdb
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.GeneratedMSBuildEditorConfig.editorconfig
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.AssemblyInfoInputs.cache
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.AssemblyInfo.cs
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.csproj.CoreCompileInputs.cache
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.sourcelink.json
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\refint\UpdateCheckBlocker.dll
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.pdb
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\UpdateCheckBlocker.genruntimeconfig.cache
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net6.0-windows\ref\UpdateCheckBlocker.dll

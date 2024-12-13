@@ -1,0 +1,5 @@
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net9.0\UpdateCheckBlocker.GeneratedMSBuildEditorConfig.editorconfig
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net9.0\UpdateCheckBlocker.AssemblyInfoInputs.cache
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net9.0\UpdateCheckBlocker.AssemblyInfo.cs
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net9.0\UpdateCheckBlocker.csproj.CoreCompileInputs.cache
+D:\Software\PyCharm Project\StartAllPatch\UpdateCheckBlocker\obj\Debug\net9.0\UpdateCheckBlocker.sourcelink.json
