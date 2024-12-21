@@ -1,132 +1,98 @@
-# PyPass-SAB 🐍
+### Guide d'Utilisation de **StartAllPatch**
 
-<div align="center">
-    <br>
-    <img src="https://img.shields.io/badge/Python-3.10-blue.svg">
-    <img src="https://img.shields.io/github/languages/code-size/GuillaumeMCK/PyPass-SAB">
-    <img src="https://img.shields.io/badge/Platform-Windows-blue.svg">
-    <a href="https://github.com/GuillaumeMCK/PyPass-SAB/releases">
-        <img src="https://img.shields.io/github/downloads/GuillaumeMCK/PyPass-SAB/total">
-    </a>
-</div>
-<br/>
+---
 
-> PyPass-SAB is a patcher written in python that allows bypassing and resetting the **100 days remaining limit**
-> of StartAllBack. This patcher supports versions between **v3.5.5** and **v3.8.10**. Other versions may work but are not
-> tested.<br/>
+#### Table des Matières
+1. [Introduction](#introduction)
+2. [Installation](#installation)
+3. [Configuration Initiale](#configuration-initiale)
+4. [Utilisation](#utilisation)
+   - [Application du Patch](#application-du-patch)
+   - [Restauration des Fichiers](#restauration-des-fichiers)
+   - [Désactivation des Mises à Jour](#désactivation-des-mises-à-jour)
+5. [Dépannage](#dépannage)
+6. [Notes de Version](#notes-de-version)
 
-<div align="center">
-    <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/.assets/banner.png" width="500">
-</div>
-<br>
+---
 
-## Why did I make this?
+#### Introduction
 
-Because it's boring to reinstall StartAllBack every 100 days.
-And especially for fun because I wanted to make a patcher by myself, so I made this one.
-But if you want to support the developer of StartAllBack buy a licence [here](https://www.startallback.com/).
+StartAllPatch est une application conçue pour patcher le logiciel **StartAllBack** et ajouter des fonctionnalités personnalisées telles que la désactivation des rappels d'essai et des mises à jour automatiques. 
 
-## What does it do?
+> **Lien GitHub** : [https://github.com/danbenba/StartAllPatch](https://github.com/danbenba/startallpatch)
 
-- It deletes the registry key that tells the software that the trial period as started.
-- Check the hash of `StartAllBackX64.dll` to make sure that the file is the correct one.
-- Make a backup of `StartAllBackX64.dll` in the same folder named `StartAllBackX64.bak`.
-- Stop all instances of `Explorer.exe` and `StartAllBackCfg.exe`.
-- Patch `StartAllBackX64.dll`
-- Start `Explorer.exe`.
-- That's all!
+---
 
-## The patch
+#### Installation
 
-<details>
-  <summary>CompareFileTime Function</summary>
+1. Téléchargez les fichiers sources ou l'exécutable depuis le [référentiel GitHub](https://github.com/danbenba/startallpatch).
+2. Si vous utilisez les sources, installez les dépendances nécessaires :
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Lancez le fichier principal :
+   ```bash
+   python src/app.py
+   ```
 
-```asm
-                      *************************************************************
-                      *                                                             
-                      *   FUNCTION                                                  
-                      *************************************************************
-                      undefined8  __fastcall  Ordinal_101 (void )
-      undefined8        RAX:8          <RETURN>
-                      0x2164  101  
-                      Ordinal_101                                     XREF[4]:     Entry Point (*) ,  180027af9 (c) , 
-                                                                                   18008a9bc (*) ,  1800920fc (*)   
-180002164  b8  00  00      MOV        EAX ,0x0
-           00  00
-180002169  c3              RET
-```
+---
 
-</details>
+#### Configuration Initiale
 
-<details>
-  <summary>CheckLicense Function</summary>
+1. **Mode Sombre/Clair** : Le thème de l'application est configuré en mode sombre par défaut.
+2. **Chemin des Actifs** : Les actifs nécessaires, tels que les icônes, sont automatiquement chargés depuis `src/assets`.
 
-```asm
-                      *************************************************************
-                      *                                                             
-                      *   FUNCTION                                                  
-                      *************************************************************
-                      undefined8  __fastcall  Ordinal_102 (undefined8 *  param_1 )
-      undefined8        RAX:8          <RETURN>
-      undefined8 *      RCX:8          param_1
-                      0x1f68  102  
-                      Ordinal_102                                     XREF[4]:     Entry Point (*) ,  180027aeb (c) , 
-                                                                                   18008a9c0 (*) ,  1800920e4 (*)   
-180001f68  48  c7  01      MOV        qword ptr [param_1 ],0x1
-           01  00  00 
-           00
-180001f6f  b8  01  00      MOV        EAX ,0x1
-           00  00
-180001f74  c3              RET
-```
+---
 
-</details>
+#### Utilisation
 
-> **Note**: The patch will not change the software's expiration date. It just bypasses the
-> licence check.
+##### Application du Patch
 
-## Registry key
+1. **Lancer le programme :**
+   - Exécutez l'application en tant qu'administrateur.
+2. **Vérification préalable :**
+   - Cliquez sur le bouton `Check` pour vérifier si le fichier `StartAllBackX64.dll` est éligible.
+3. **Appliquer le patch :**
+   - Si éligible, cliquez sur le bouton `Patch`. Un backup sera créé si l'option "Backup" est activée.
+4. **Résultats :**
+   - Vérifiez les messages de statut dans l’interface Event Viewer pour confirmation.
 
-A registry key is created when the software is launched for the first time. This key tells the software that the trial
-period has started.
-To reset the trial period of 100 days, we need to delete the following key :
+##### Restauration des Fichiers
 
-```reg
-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx}
-```
+1. **Restauration depuis un backup existant :**
+   - Cliquez sur `Restore`.
+2. **Sélection manuelle du fichier :**
+   - Si aucun backup n’est détecté, un explorateur de fichiers s’ouvrira pour sélectionner le fichier.
 
-> **Note**: Each time you launch the patcher, the key will be deleted.
+##### Désactivation des Mises à Jour
 
-## How to launch it?
+1. **Lancer le processus :**
+   - Cliquez sur `Disable Updates`.
+2. **Ajout aux exclusions de Windows Defender :**
+   - Le fichier `UpdateCheck.exe` sera automatiquement ajouté aux exclusions.
 
-**From release page** : <br/>
-Download the latest [release](https://github.com/GuillaumeMCK/PyPass-SAB/releases), and run the file.
-<br><br/>
-**From sources** : <br/>
-Follow the instructions below <br/>
+---
 
-```batch
-git clone https://github.com/GuillaumeMCK/PyPass-SAB.git
-cd PyPass-SAB
-py -m venv env
-env\Scripts\activate.ps1
-pip install -r requirements.txt
-py main.py
-```
+#### Dépannage
 
-## Build
+1. **Message d’erreur "Fichier introuvable" :**
+   - Vérifiez que `StartAllBackX64.dll` est bien installé dans `C:/Program Files/StartAllBack/`.
+2. **Patch échoué :**
+   - Assurez-vous que l'application est lancée avec des droits administrateurs.
 
-To create an executable for windows :
+---
 
-```batch
-py -m venv env
-env\Scripts\activate.ps1
-pip install -r requirements.txt
-py build.py
-```
+#### Notes de Version
 
-## Disclaimer
+- **Version 0.9.5**
+  - Compatibilité étendue avec StartAllBack 3.x.x.
+  - Support pour les versions 3.5.5 à 3.6.5 et supperieur.
+  - Gestion des fonctions `CheckLicense` et `CompareFileTime` améliorée.
 
-> **Warning**:
-> I AM NOT RESPONSIBLE FOR ANY DAMAGE CAUSED OR ANY ILLEGAL USAGE OF THIS APP.
-> USE IT AT YOUR OWN RISK.
+- **Version 0.8.3**
+  - Interface utilisateur initiale.
+  - Support des opérations de backup et restauration.
+
+---
+
+Pour tout problème ou contribution, veuillez consulter le [dépôt GitHub](https://github.com/danbenba/startallpatch).
