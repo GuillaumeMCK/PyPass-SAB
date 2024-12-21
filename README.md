@@ -1,4 +1,4 @@
-### Guide d'Utilisation de **StartAllPatch**
+#StartAllPatch
 
 ---
 
@@ -85,11 +85,12 @@ StartAllPatch est une application conçue pour patcher le logiciel **StartAllBac
 #### Notes de Version
 
 - **Version 0.9.5**
-  - Compatibilité étendue avec StartAllBack 3.x.x.
-  - Support pour les versions 3.5.5 à 3.6.5 et supperieur.
+  - Compatibilité étendue avec StartAllBack 3.x.x (Parfois INSTABLE).
+  - Parfait support pour les versions 3.5.5 à 3.6.5.
   - Gestion des fonctions `CheckLicense` et `CompareFileTime` améliorée.
 
 - **Version 0.8.3**
+  - Support UNIQUEMENT pour les versions 3.5.5 à 3.6.5.
   - Interface utilisateur initiale.
   - Support des opérations de backup et restauration.
 
