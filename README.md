@@ -184,7 +184,7 @@ Pour tout problème ou question, veuillez :
 
 - **Consulter le [dépôt GitHub](https://github.com/danbenba/startallpatch)** : Recherchez des issues similaires ou ouvrez-en une nouvelle.
 - **Rejoindre la Communauté** : Participez aux discussions sur notre [forum Discord](https://discord.gg/yourdiscordlink) *(remplacez par votre lien Discord si disponible)*.
-- **Envoyer un Email** : Contactez-nous directement à [support@startallpatch.com](mailto:support@startallpatch.com).
+- **Envoyer un Email** : Contactez-nous directement à [danbenba@proton.me](mailto:danbenba@proton.me).
 
 ---
 
