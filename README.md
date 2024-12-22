@@ -1,6 +1,6 @@
 # StartAllPatch (![PyPass-SAB v2 Unofficial](https://github.com/GuillaumeMCK/PyPass-SAB))
 
-![StartAllPatch Logo](https://github.com/danbenba/StartAllPatch/blob/main/.assets/icon.png) <!-- Assurez-vous d'ajouter un logo dans le dossier assets -->
+![StartAllPatch Logo](https://github.com/danbenba/StartAllPatch/blob/main/.assets/icon.png)
 
 StartAllPatch est une application puissante conçue pour patcher le logiciel **StartAllBack**, offrant des fonctionnalités personnalisées telles que la désactivation des rappels d'essai et des mises à jour automatiques. Simplifiez et personnalisez votre expérience utilisateur avec StartAllPatch.
 
@@ -40,7 +40,7 @@ StartAllPatch est une solution dédiée à l'amélioration de **StartAllBack**, 
 - **Blocage des Mises à Jour Automatiques** : Contrôlez manuellement les mises à jour de StartAllBack.
 - **Gestion des Backups** : Créez et restaurez facilement des sauvegardes de vos fichiers modifiés.
 - **Interface Intuitive** : Une interface utilisateur claire et facile à naviguer.
-- **Compatibilité Étendue** : Supporte plusieurs versions de StartAllBack (3.5.5 à 3.6.5).
+- **Compatibilité Étendue** : Supporte plusieurs versions de StartAllBack (3.5.5 à 3.6.5 et supérieur).
 
 ---
 
@@ -49,7 +49,7 @@ StartAllPatch est une solution dédiée à l'amélioration de **StartAllBack**, 
 ### Prérequis
 
 - **Système d'exploitation** : Windows 10 ou supérieur.
-- **StartAllBack** : Version 3.5.5 à 3.6.5 installée.
+- **StartAllBack** : Version 3.5.5 à 3.6.5 ou supérieur installée.
 - **Python 3.8+** (si vous utilisez les sources).
 
 ### Étapes d'Installation
