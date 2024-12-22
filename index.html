@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StartAllPatch</title>
+  
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome pour les icônes -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pap+KdA75X9a0GdhvBXfVM2GNmZ1P/j7k2RmtZIr7s/B2zDd4u6HVgQQVXydLvx0os0lPWR0sB7RfCjeVb5KPw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <style>
+    /* ---------------------------------------------------
+       VARIABLES CSS POUR THÈMES
+    --------------------------------------------------- */
+    :root {
+      --background-color: rgba(240, 244, 248, 0.8); /* Ajout d'opacité pour voir le fond d'écran */
+      --background-image: url('https://lecrabeinfo.net/app/uploads/2021/06/windows-11-wallpaper-img0-60ca004537900-scaled.jpg'); /* Image de fond pour le thème clair */
+      --text-color: #333333;
+      --header-background: linear-gradient(135deg, #4a90e2 0%, #9013sfe 100%);
+      --nav-background: #ffffff;
+      --nav-text-color: #333333;
+      --nav-hover-background: #4a90e2;
+      --nav-hover-text-color: #ffffff;
+      --feature-background: #ffffff;
+      --feature-text-color: #4a90e2;
+      --download-button-background: #4a90e2;
+      --download-button-text-color: #ffffff;
+      --download-button-hover-background: #357ABD;
+      --footer-background: #ffffff;
+      --footer-text-color: #666666;
+      --link-color: #4a90e2;
+      --link-hover-color: #357ABD;
+      --markdown-background: #ffffff;
+      --markdown-text-color: #333333;
+      --code-background: rgba(0, 0, 0, 0.05);
+      --blockquote-border: #4a90e2;
+      --button-border-radius: 8px;
+      --feature-border-radius: 10px;
+      --button-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --container-background: rgba(255, 255, 255, 0.9); /* Ajout d'opacité pour voir le fond d'écran */
+      --container-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      --guide-transition: max-height 0.6s ease, opacity 0.6s ease;
+      /* Variable pour la couleur du guide-toggle */
+      --guide-toggle-text-color: #000000; /* Noir par défaut */
+    }
+
+    /* Thème Sombre */
+    [data-theme="dark"] {
+      --background-color: rgba(31, 31, 31, 0.8); /* Ajout d'opacité pour voir le fond d'écran */
+      --background-image: url('https://lecrabeinfo.net/app/uploads/2021/06/windows-11-wallpaper-img19-60ca004951f20-scaled.jpg'); /* Image de fond pour le thème sombre */
+      --text-color: #f5f5f5;
+      --header-background: linear-gradient(135deg, #4a90e2 0%, #90s13fe 100%);
+      --nav-background: #2c2c2c;
+      --nav-text-color: #f5f5f5;
+      --nav-hover-background: #4a90e2;
+      --nav-hover-text-color: #ffffff;
+      --feature-background: #2c2c2c;
+      --feature-text-color: #4a90e2;
+      --download-button-background: #4a90e2;
+      --download-button-text-color: #ffffff;
+      --download-button-hover-background: #357ABD;
+      --footer-background: #2c2c2c;
+      --footer-text-color: #cccccc;
+      --link-color: #4a90e2;
+      --link-hover-color: #357ABD;
+      --markdown-background: #2c2c2c;
+      --markdown-text-color: #f5f5f5;
+      --code-background: #1f1f1f;
+      --blockquote-border: #4a90e2;
+      --button-box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+      --container-background: rgba(44, 44, 44, 0.9); /* Ajout d'opacité pour voir le fond d'écran */
+      --container-box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+      /* Modifier la variable pour la couleur du guide-toggle */
+      --guide-toggle-text-color: #ffffff; /* Blanc en thème sombre */
+    }
+
+    /* ---------------------------------------------------
+       RESET & BASE
+    --------------------------------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--background-color);
+      background-image: var(--background-image); /* Application de l'image de fond */
+      background-size: cover; /* Ajuste la taille de l'image pour couvrir tout l'écran */
+      background-repeat: no-repeat; /* Empêche la répétition de l'image */
+      background-position: center; /* Centre l'image */
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      /* Pour un défilement fluide par défaut */
+      scroll-behavior: smooth;
+      transition: background-color 0.3s, color 0.3s, background-image 0.3s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------------------------------------------------
+       ANIMATIONS
+    --------------------------------------------------- */
+    /* (Animations existantes inchangées) */
+
+    /* ---------------------------------------------------
+       HEADER
+    --------------------------------------------------- */
+    header {
+      /* Dégradé moderne */
+      background: var(--header-background);
+      color: #ffffff;
+      padding: 2em 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: descend 1s ease forwards;
+      transition: background 0.3s;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      animation: pop 1.2s ease;
+    }
+    header p {
+      font-size: 1.3em;
+    }
+
+	/* ---------------------------------------------------
+		   NAVIGATION
+	--------------------------------------------------- */
+	nav {
+	  display: flex;
+	  justify-content: center;
+	  gap: 1.5em;
+	  background: var(--nav-background);
+	  padding: 1em;
+	  animation: fadeInUp 0.8s ease forwards;
+	  transition: background 0.3s;
+	  border-bottom: 1px solid #e0e0e0;
+	  border-top: 1px solid #e0e0e0;
+
+	  /* Limiter la largeur et centrer la barre de navigation */
+	  max-width: 1200px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+	  width: 100%;
+	  margin: 0 auto;
+
+	  /* Ajouter des coins arrondis */
+	  border-radius: 10px; /* Ajustez la valeur pour des coins plus ou moins arrondis */
+	}
+
+	nav a {
+	  position: relative;
+	  text-decoration: none;
+	  font-weight: bold;
+	  color: var(--nav-text-color);
+	  background-color: transparent;
+	  padding: 0.5em 1em;
+	  border-radius: var(--button-border-radius);
+	  transition: all 0.2s ease;
+	}
+
+	nav a:hover {
+	  background-color: var(--nav-hover-background);
+	  color: var(--nav-hover-text-color);
+	  animation: wave 0.5s ease;
+	}
+
+
+    /* ---------------------------------------------------
+       CONTENEUR
+    --------------------------------------------------- */
+    .container {
+      flex: 1;
+      max-width: 1400px;
+      margin: 2em auto;
+      padding: 2em;
+      background-color: var(--container-background);
+      box-shadow: var(--container-box-shadow);
+      border-radius: 12px;
+      animation: fadeIn 0.8s ease forwards;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    /* ---------------------------------------------------
+       SECTION FEATURES
+    --------------------------------------------------- */
+    .feature-section {
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+    }
+    .feature {
+      background: var(--feature-background);
+      padding: 1.5em;
+      border-radius: var(--feature-border-radius);
+      flex: 1 1 300px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease;
+      transition: transform 0.2s ease, box-shadow 0.3s;
+      text-align: center; /* Centrer les contenus */
+    }
+    .feature:hover {
+      transform: translateY(-5px);
+      animation: tilt 1.5s ease infinite alternate;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .feature h3 {
+      color: var(--feature-text-color);
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+    .feature p {
+      margin-top: 0.5em;
+    }
+
+    /* Nouvelle classe pour les icônes */
+    .feature img.icon-img {
+      width: 50px; /* Taille uniforme */
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+    .feature img.icon-img:hover {
+      transform: scale(1.1);
+    }
+
+    /* ---------------------------------------------------
+       SECTION TÉLÉCHARGEMENT
+    --------------------------------------------------- */
+    .download-section {
+      text-align: center;
+      margin-top: 2em;
+      animation: fadeInDown 1s ease forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1em;
+    }
+    .download-button {
+      display: inline-block;
+      padding: 1em 2em;
+      background: var(--download-button-background);
+      color: var(--download-button-text-color);
+      font-size: 1.2em;
+      font-weight: bold;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+      box-shadow: var(--button-box-shadow);
+    }
+    .download-button:hover {
+      background: var(--download-button-hover-background);
+      transform: scale(1.03);
+      animation: glow 1.5s infinite;
+    }
+
+    /* ---------------------------------------------------
+       SECTION GUIDE (GUIDE D'UTILISATION MODIFIÉE)
+    --------------------------------------------------- */
+    .markdown-container {
+      background: var(--markdown-background);
+      padding: 2em;
+      border-radius: 12px;
+      margin: 2em 0;
+      color: var(--markdown-text-color);
+      animation: fadeInLeft 1s ease forwards;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+    .markdown-container h2 {
+      color: var(--link-color);
+      margin-bottom: 1em;
+    }
+    .markdown-container pre {
+      background: var(--code-background);
+      padding: 1em;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1em 0;
+      color: var(--text-color);
+    }
+    .markdown-container code {
+      background: var(--code-background);
+      padding: 0.2em 0.3em;
+      border-radius: 4px;
+      color: var(--link-color);
+    }
+    .markdown-container li {
+      margin: 0.5em 0;
+    }
+    .markdown-container blockquote {
+      border-left: 4px solid var(--blockquote-border);
+      padding-left: 1em;
+      margin-left: 0;
+      color: #666666;
+      font-style: italic;
+    }
+
+    /* ---------------------------------------------------
+       SECTION VERSIONS
+    --------------------------------------------------- */
+    #versions {
+      animation: fadeInRight 1s ease forwards;
+    }
+    #versions ul li {
+      margin: 0.5em 0;
+    }
+    #versions ul li a {
+      text-decoration: none;
+      color: var(--link-color);
+      transition: color 0.3s ease;
+    }
+    #versions ul li a:hover {
+      color: var(--link-hover-color);
+    }
+
+    /* ---------------------------------------------------
+       SECTION CONTACT
+    --------------------------------------------------- */
+    #contact {
+      margin-top: 2em;
+      animation: slideDown 1s ease forwards;
+    }
+    #contact a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    #contact a:hover {
+      color: var(--link-hover-color);
+      text-decoration: underline;
+    }
+
+    /* ---------------------------------------------------
+       FOOTER
+    --------------------------------------------------- */
+    footer {
+      background: var(--footer-background);
+      color: var(--footer-text-color);
+      text-align: center;
+      padding: 1em;
+      margin-top: auto;
+      animation: fadeIn 1s ease forwards;
+      transition: background-color 0.3s, color 0.3s;
+      border-top: 1px solid #e0e0e0;
+    }
+    footer a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover {
+      color: var(--link-hover-color);
+      text-decoration: underline;
+    }
+
+    /* ---------------------------------------------------
+       Liens de pagination (exemple)
+    --------------------------------------------------- */
+    .page-links {
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      margin: 2em 0;
+      animation: fadeIn 1s ease forwards;
+    }
+    .page-links a {
+      padding: 0.5em 1em;
+      background: var(--link-color);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: var(--button-border-radius);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .page-links a:hover {
+      background: var(--link-hover-color);
+      transform: scale(1.03);
+    }
+
+    /* ---------------------------------------------------
+       BOUTON DE BASCULE THÈME
+    --------------------------------------------------- */
+    .theme-toggle {
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      background: var(--nav-background);
+      border: none;
+      border-radius: 50%;
+      width: 50px; /* Taille adaptée */
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--button-box-shadow);
+      transition: background 0.3s, transform 0.3s;
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+    .theme-icon {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.5s ease;
+    }
+    .dark-theme-icon {
+      opacity: 1;
+    }
+    .light-theme-icon {
+      opacity: 0;
+    }
+    [data-theme="dark"] .dark-theme-icon {
+      opacity: 1;
+    }
+    [data-theme="dark"] .light-theme-icon {
+      opacity: 0;
+    }
+    [data-theme="light"] .dark-theme-icon {
+      opacity: 0;
+    }
+    [data-theme="light"] .light-theme-icon {
+      opacity: 1;
+    }
+
+    /* ---------------------------------------------------
+       BOUTON DE BASCULE GUIDE
+    --------------------------------------------------- */
+    .guide-toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 1em;
+    }
+    .guide-toggle {
+      background: var(--nav-background);
+      border: none;
+      border-radius: 8px;
+      padding: 0.5em 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--button-box-shadow);
+      transition: background 0.3s, transform 0.3s;
+      font-size: 1em;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-toggle:hover {
+      transform: scale(1.05);
+    }
+    .guide-toggle span {
+      display: flex;
+      align-items: center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      color: var(--guide-toggle-text-color); /* Utiliser la variable */
+    }
+    .guide-show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .guide-hide {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    #guide-toggle[data-guide="show"] .guide-show {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    #guide-toggle[data-guide="show"] .guide-hide {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .guide-toggle i {
+      margin-right: 0.5em;
+    }
+
+    /* ---------------------------------------------------
+       SECTION GUIDE HIDDEN PAR DEFAULT
+    --------------------------------------------------- */
+    #guide {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease, opacity 0.6s ease;
+    }
+
+    #guide.show {
+      opacity: 1;
+      max-height: 5000px; /* Augmenté de 1000px à 5000px */
+      animation: descend-on-click 0.6s ease forwards;
+    }
+
+    /* ---------------------------------------------------
+       ANIMATION DESCEND-ON-CLICK SUR LES SECTIONS
+    --------------------------------------------------- */
+    section.descend-on-click {
+      animation: descend-on-click 0.6s ease forwards;
+    }
+
+    /* ---------------------------------------------------
+       Bouton "Afficher plus"
+    --------------------------------------------------- */
+    .show-more-button {
+      display: inline-block;
+      padding: 0.75em 1.5em;
+      background: var(--link-color);
+      color: #ffffff;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
+      border-radius: var(--button-border-radius);
+      cursor: pointer;
+      box-shadow: var(--button-box-shadow);
+      transition: background 0.3s ease, transform 0.3s ease;
+      text-decoration: none;
+      margin-top: 1em;
+    }
+    .show-more-button:hover {
+      background: var(--link-hover-color);
+      transform: scale(1.05);
+    }
+
+    /* ---------------------------------------------------
+       Responsive Images
+    --------------------------------------------------- */
+    .markdown-container img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1em auto;
+    }
+
+    /* ---------------------------------------------------
+       Ajout des styles pour l'image de fond
+    --------------------------------------------------- */
+    /* Déjà intégré dans le body via les variables CSS */
+
+  </style>
+</head>
+
+<body>
+  <!-- BOUTON DE BASCULE THÈME -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Basculer le thème">
+    <img src="https://img.icons8.com/sf-regular-filled/48/FFFFFF/sun.png" alt="Dark Theme" class="theme-icon dark-theme-icon">
+    <img src="https://img.icons8.com/ios-filled/50/do-not-disturb-2.png" alt="Light Theme" class="theme-icon light-theme-icon">
+  </button>
+
+  <!-- HEADER -->
+  <header>
+    <h1>StartAllPatch</h1>
+    <p>Transformez StartAllBack avec des fonctionnalités avancées.</p>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="#features">Fonctionnalités</a>
+    <a href="#download">Téléchargement</a>
+    <a href="#contact">Contact</a>
+    <a href="#versions">Versions</a>
+  </nav>
+
+  <!-- CONTENEUR PRINCIPAL -->
+  <div class="container">
+    <!-- SECTION FONCTIONNALITÉS -->
+    <section id="features">
+      <h2>Fonctionnalités Principales</h2>
+      <div class="feature-section">
+        <!-- Fonctionnalité 1 : Compatibilité Étendue -->
+        <div class="feature">
+          <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/9385/9385969.png" alt="Compatibilité Étendue">
+          <h3>Compatibilité Étendue</h3>
+          <p>Support des versions de StartAllBack.</p>
+        </div>
+        
+        <!-- Fonctionnalité 2 : Patching Simplifié -->
+        <div class="feature">
+          <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/1353/1353981.png" alt="Patching Simplifié">
+          <h3>Patching Simplifié</h3>
+          <p>Patchez les fichiers en un clic grâce à notre interface intuitive.</p>
+        </div>
+        
+        <!-- Fonctionnalité 3 : Désactivation des Mises à Jour -->
+        <div class="feature">
+          <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/5791/5791701.png" alt="Désactivation des Mises à Jour">
+          <h3>Désactivation des Mises à Jour</h3>
+          <p>Empêchez les mises à jour automatiques qui perturbent vos personnalisations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION TÉLÉCHARGEMENT -->
+    <section id="download" class="download-section">
+      <h2>Téléchargements</h2>
+      <a
+        href="https://github.com/danbenba/StartAllPatch/releases/download/lasted/StartAllPatch.exe"
+        target="_blank"
+        class="download-button"
+      >
+        Télécharger (v0.9.5)
+      </a>
+      <!-- BOUTON DE BASCULE GUIDE DÉPLACÉ -->
+      <div class="guide-toggle-container">
+        <button class="guide-toggle" id="guide-toggle" aria-label="Afficher le guide" data-guide="hide">
+          <span class="guide-show">
+            <i class="fas fa-book-open"></i> Afficher le guide
+          </span>
+          <span class="guide-hide">
+            <i class="fas fa-book"></i> Cacher le guide
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SECTION GUIDE (GUIDE D'UTILISATION MODIFIÉE) -->
+    <section id="guide">
+      <h2>Guide d'Utilisation</h2>
+      <div class="markdown-container">
+        <!-- Contenu complet du guide -->
+        <h1>StartAllPatch (PyPass-SAB v2 Unofficial)</h1>
+        
+        <img src="https://raw.githubusercontent.com/danbenba/StartAllPatch/main/.assets/icon.png" alt="StartAllPatch Logo">
+
+        <p>StartAllPatch est une application puissante conçue pour patcher le logiciel <strong>StartAllBack</strong>, offrant des fonctionnalités personnalisées telles que la désactivation des rappels d'essai et des mises à jour automatiques. Simplifiez et personnalisez votre expérience utilisateur avec StartAllPatch.</p>
+
+        <p><strong>Projet inspiré de <img src="https://raw.githubusercontent.com/GuillaumeMCK/PyPass-SAB/main/logo.png" alt="PyPass-SAB"></strong></p>
+
+        <hr />
+
+        <h2>🗂️ Table des Matières</h2>
+        <ol>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#utilisation">Utilisation</a>
+            <ul>
+              <li><a href="#application-du-patch">Application du Patch</a></li>
+              <li><a href="#restauration-des-fichiers">Restauration des Fichiers</a></li>
+              <li><a href="#désactivation-des-mises-à-jour">Désactivation des Mises à Jour</a></li>
+            </ul>
+          </li>
+        </ol>
+
+        <hr />
+
+        <h2>🛠️ Installation</h2>
+
+        <h3>Prérequis</h3>
+        <ul>
+          <li><strong>Système d'exploitation</strong> : Windows 10 ou supérieur.</li>
+          <li><strong>StartAllBack</strong> : Version 3.5.5 à 3.6.5 ou supérieur installée.</li>
+          <li><strong>Python 3.8+</strong> (si vous utilisez les sources).</li>
+        </ul>
+
+        <h3>Étapes d'Installation</h3>
+        <ol>
+          <li><strong>Téléchargement</strong>
+            <ul>
+              <li>Téléchargez les fichiers sources ou l'exécutable depuis le <a href="https://github.com/danbenba/startallpatch" target="_blank">référentiel GitHub</a>.</li>
+            </ul>
+          </li>
+          <li><strong>Installation des Dépendances (pour les sources)</strong>
+            <pre><code>pip install -r requirements.txt</code></pre>
+          </li>
+          <li><strong>Exécution de l'Application</strong>
+            <ul>
+              <li><strong>Exécutable</strong> : Double-cliquez sur <code>StartAllPatch.exe</code>.</li>
+              <li><strong>Sources</strong> :
+                <pre><code>python src/app.py</code></pre>
+              </li>
+            </ul>
+          </li>
+          <li><strong>Installation via Package Manager</strong> <em>(Optionnel)</em>
+            <ul>
+              <li>Si disponible, vous pouvez installer via un gestionnaire de paquets comme <code>pip</code>.</li>
+            </ul>
+          </li>
+        </ol>
+
+        <hr />
+
+        <h2>🖥️ Utilisation</h2>
+
+        <h3>🛠️ Application du Patch</h3>
+        <ol>
+          <li><strong>Lancer l'Application</strong>
+            <ul>
+              <li>Exécutez l'application en tant qu'administrateur pour garantir les permissions nécessaires.</li>
+            </ul>
+          </li>
+          <li><strong>Vérification Préalable</strong>
+            <ul>
+              <li>Cliquez sur le bouton <code>Check</code> pour vérifier l'éligibilité du fichier <code>StartAllBackX64.dll</code>.</li>
+            </ul>
+          </li>
+          <li><strong>Appliquer le Patch</strong>
+            <ul>
+              <li>Si le fichier est éligible, cliquez sur le bouton <code>Patch</code>. Un backup sera automatiquement créé si l'option "Backup" est activée.</li>
+            </ul>
+          </li>
+          <li><strong>Confirmation des Résultats</strong>
+            <ul>
+              <li>Consultez les messages de statut dans l’interface ou dans l’Event Viewer pour confirmer la réussite du patch.</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3>🔄 Restauration des Fichiers</h3>
+        <ol>
+          <li><strong>Depuis un Backup Existant</strong>
+            <ul>
+              <li>Cliquez sur <code>Restore</code> pour restaurer les fichiers depuis la dernière sauvegarde.</li>
+            </ul>
+          </li>
+          <li><strong>Sélection Manuelle</strong>
+            <ul>
+              <li>Si aucun backup n’est détecté, un explorateur de fichiers s’ouvrira pour sélectionner manuellement le fichier à restaurer.</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3>⛔ Désactivation des Mises à Jour</h3>
+        <ol>
+          <li><strong>Démarrer le Processus</strong>
+            <ul>
+              <li>Cliquez sur <code>Disable Updates</code> pour désactiver les mises à jour automatiques de StartAllBack.</li>
+            </ul>
+          </li>
+          <li><strong>Exclusions de Windows Defender</strong>
+            <ul>
+              <li>Le fichier <code>UpdateCheck.exe</code> sera automatiquement ajouté aux exclusions de Windows Defender pour éviter toute interférence.</li>
+            </ul>
+          </li>
+        </ol>
+
+        <!-- Bouton "Afficher plus" -->
+        <a href="https://github.com/danbenba/StartAllPatch/blob/main/README.md" target="_blank" class="show-more-button">
+          <i class="fas fa-arrow-right"></i> Afficher plus
+        </a>
+      </div>
+    </section>
+
+    <!-- SECTION VERSIONS -->
+    <section id="versions">
+      <h2>Versions Disponibles</h2>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/danbenba/startallpatch/releases/tag/lasted"
+            target="_blank"
+            >	Version 0.9.5</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/danbenba/startallpatch/releases/tag/v0.8.3"
+            target="_blank"
+            >	Version 0.8.3</a
+          >
+        </li>
+      </ul>
+    </section>
+
+    <!-- SECTION CONTACT -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        Pour toute question ou suggestion, contactez-nous via notre page
+        <a href="https://github.com/danbenba/startallpatch/issues" target="_blank"
+          >GitHub Issues</a
+        >.
+      </p>
+    </section>
+  </div>
+
+  <!-- PIED DE PAGE -->
+  <footer>
+    <p>
+      &copy; 2024 danbenba. Tous droits réservés. WebVer
+      <span style="color:red;">1.0</span> par
+      <a href="https://github.com/danbenba" target="_blank">danbenba</a>.
+    </p>
+  </footer>
+
+  <!-- SCRIPT POUR ANIMATION AU CLIC, BASCULE THÈME ET TOGGLE GUIDE -->
+  <script>
+    /**
+     * Animation au clic sur les liens de navigation
+     */
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+
+        // Enlève la classe descend-on-click sur toutes les sections
+        document.querySelectorAll('section').forEach(sec => {
+          sec.classList.remove('descend-on-click');
+        });
+
+        // Ajoute la classe sur la section ciblée pour déclencher l'animation
+        if (targetSection) {
+          targetSection.classList.add('descend-on-click');
+
+          // Effectue un défilement fluide vers la section
+          targetSection.scrollIntoView({
+            behavior: 'smooth'
+          });
+
+          // Retirer la classe après l'animation pour pouvoir la réutiliser
+          targetSection.addEventListener('animationend', () => {
+            targetSection.classList.remove('descend-on-click');
+          }, { once: true });
+        }
+      });
+    });
+
+    /**
+     * Basculer le thème clair/sombre
+     */
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const rootElement = document.documentElement;
+
+    // Fonction pour basculer le thème
+    function toggleTheme() {
+      if (rootElement.getAttribute('data-theme') === 'dark') {
+        rootElement.setAttribute('data-theme', 'light');
+        // Mise à jour des icônes via CSS
+      } else {
+        rootElement.setAttribute('data-theme', 'dark');
+        // Mise à jour des icônes via CSS
+      }
+      // Sauvegarder le thème dans le localStorage
+      localStorage.setItem('theme', rootElement.getAttribute('data-theme'));
+    }
+
+    // Ajouter un écouteur d'événement au bouton
+    themeToggleBtn.addEventListener('click', toggleTheme);
+
+    // Charger le thème sauvegardé au chargement de la page
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      rootElement.setAttribute('data-theme', savedTheme);
+    });
+
+    /**
+     * Toggle Guide Section
+     */
+    const guideToggleBtn = document.getElementById('guide-toggle');
+    const guideSection = document.getElementById('guide');
+
+    guideToggleBtn.addEventListener('click', function() {
+      const isShown = guideSection.classList.contains('show');
+      if (isShown) {
+        // Masquer le guide
+        guideSection.classList.remove('show');
+        guideToggleBtn.setAttribute('data-guide', 'hide');
+        guideToggleBtn.setAttribute('aria-label', 'Afficher le guide');
+      } else {
+        // Afficher le guide avec animation
+        guideSection.classList.add('show');
+        guideToggleBtn.setAttribute('data-guide', 'show');
+        guideToggleBtn.setAttribute('aria-label', 'Cacher le guide');
+      }
+    });
+  </script>
+</body>
+</html>
