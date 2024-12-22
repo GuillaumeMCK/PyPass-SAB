@@ -1,6 +1,6 @@
 # StartAllPatch
 
-![StartAllPatch Logo](https://github.com/danbenba/StartAllPatch/blob/main/assets/logo.png) <!-- Assurez-vous d'ajouter un logo dans le dossier assets -->
+![StartAllPatch Logo](https://github.com/danbenba/StartAllPatch/blob/main/.assets/icon.png) <!-- Assurez-vous d'ajouter un logo dans le dossier assets -->
 
 StartAllPatch est une application puissante conçue pour patcher le logiciel **StartAllBack**, offrant des fonctionnalités personnalisées telles que la désactivation des rappels d'essai et des mises à jour automatiques. Simplifiez et personnalisez votre expérience utilisateur avec StartAllPatch.
 
@@ -121,7 +121,7 @@ StartAllPatch est une solution dédiée à l'amélioration de **StartAllBack**, 
 
 ## 📷 Capture d'Écran
 
-![Interface StartAllPatch](https://github.com/danbenba/StartAllPatch/blob/main/assets/screenshot.png) <!-- Ajoutez une capture d'écran dans le dossier assets -->
+![Interface StartAllPatch](https://github.com/danbenba/StartAllPatch/blob/main/.assets/banner.png) <!-- Ajoutez une capture d'écran dans le dossier assets -->
 
 *Interface utilisateur de StartAllPatch montrant les options principales.*
 
