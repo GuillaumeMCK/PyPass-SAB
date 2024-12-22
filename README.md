@@ -1,8 +1,10 @@
-# StartAllPatch
+# StartAllPatch (![PyPass-SAB v2 Unofficial](https://github.com/GuillaumeMCK/PyPass-SAB))
 
 ![StartAllPatch Logo](https://github.com/danbenba/StartAllPatch/blob/main/.assets/icon.png) <!-- Assurez-vous d'ajouter un logo dans le dossier assets -->
 
 StartAllPatch est une application puissante conçue pour patcher le logiciel **StartAllBack**, offrant des fonctionnalités personnalisées telles que la désactivation des rappels d'essai et des mises à jour automatiques. Simplifiez et personnalisez votre expérience utilisateur avec StartAllPatch.
+
+**Projet inspiré de ![PyPass-SAB](https://github.com/GuillaumeMCK/PyPass-SAB)**
 
 ---
 
