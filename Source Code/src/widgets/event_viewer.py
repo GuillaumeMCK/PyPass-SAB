@@ -56,7 +56,7 @@ class EventViewer(ctk.CTkFrame):
         self.text_box.delete("1.0", "end")       # Supprime tout le contenu
         self.text_box.configure(state="disabled")  # Réactive l'état "disabled" pour empêcher la modification
         self.add_banner("-")
-        self.event_info("            StartAllPatch v0.8.3")
+        self.event_info("            StartAllPatch v0.9.5")
         self.event_info("  This Patch is compatible with SAB 3.x.x.")
         self.add_banner("-")
         self.event("\n")

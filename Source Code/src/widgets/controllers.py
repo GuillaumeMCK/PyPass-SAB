@@ -20,8 +20,8 @@ class Controllers(ctk.CTkFrame):
         self.update_checkbox = ctk.CTkCheckBox(self, text="Update", command=self.update_checkbox_callback)
 
         self.about_btn = self._create_btn(" Restore ", self.about_btn_cmd, 0, 1, "e", 5, 10)
-        self.checkup_btn = self._create_btn(" Checkup ", self.checkup_btn_cmd, 0, 3, "e", 5, 10)
-        self.checkup_btn = self._create_btn("CL", self.clear_btn_cmd, 0, 0, "e", 5, 10)
+        self.checkup_btn = self._create_btn(" Check ", self.checkup_btn_cmd, 0, 3, "e", 5, 10)
+        self.checkup_btn = self._create_btn(" Clear ", self.clear_btn_cmd, 0, 0, "e", 5, 10)
         self.patch_btn = self._create_btn(" Patch ", self.handle_patch_btn_cmd, 0, 2, "e", 5, 10, state="disabled")
 
         # Add Options Button
@@ -53,7 +53,7 @@ class Controllers(ctk.CTkFrame):
         backup_checkbox.select()
 
         # Update Option
-        update_label = ctk.CTkLabel(options_window, text="Disable SABUpdates (172 MB)")
+        update_label = ctk.CTkLabel(options_window, text="Disable SABUpdates (172MB)")
         update_label.grid(row=2, column=0, padx=10, pady=10, sticky="w")
         update_checkbox = ctk.CTkCheckBox(options_window, text="", command=lambda: self.toggle_checkbox(self.update_checkbox))
         update_checkbox.grid(row=2, column=1, padx=10, pady=10, sticky="e")

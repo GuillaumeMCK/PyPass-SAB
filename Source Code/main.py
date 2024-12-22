@@ -61,9 +61,9 @@ def prompt_for_update_with_msgbox(update_url):
     return False
 
 if __name__ == "__main__":
-    CURRENT_VERSION = "0.8.3"
-    VERSION_URL = "https://raw.githubusercontent.com/danbenba/StartAllPatch/refs/heads/project/version"
-    UPDATE_URL = "https://github.com/danbenba/StartAllPatch"
+    CURRENT_VERSION = "0.9.5"
+    VERSION_URL = "https://raw.githubusercontent.com/danbenba/StartAllPatch/refs/heads/main/version"
+    UPDATE_URL = "https://github.com/danbenba/StartAllPatch/releases/tag/lasted"
 
     if not isUserAdmin():
         runAsAdmin()
@@ -73,9 +73,9 @@ if __name__ == "__main__":
                 exit()  # Exits the program after redirecting
         messagebox.showinfo(
             "Note",
-            "This is a beta version of StartAllPatch.\n\n"
+            "This is a preview version of StartAllPatch.\n\n"
             "If you encounter any issues, please report them at:\n\n"
-            "https://github.com/danbenba/startallpatch/issues"
+            "https://github.com/danbenba/StartAllPatch/issues"
         )
         app = App()
         app.mainloop()

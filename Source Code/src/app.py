@@ -37,7 +37,7 @@ class App(ctk.CTk):
 
     def setup_widgets(self):
         # ============ configure window ============
-        self.title("StartAllPatch v0.8.3")
+        self.title("StartAllPatch v0.9.5")
         self.geometry(f"{WIDTH}x{HEIGHT}")
         self.minsize(WIDTH, HEIGHT)
         self.configure(fg_color=colors["black"], bg_color=colors["white"])
