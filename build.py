@@ -8,7 +8,7 @@ pyinstaller_options = [
     "--noconsole",
     "--uac-admin",
     "--icon=src/assets/icon.ico",
-    "--add-data=src/assets;/assets/",
+    "--add-data=src/assets;assets",
     "--add-data=env/Lib/site-packages/customtkinter;customtkinter/",
     "--exclude-module=PyInstaller",
 ]
