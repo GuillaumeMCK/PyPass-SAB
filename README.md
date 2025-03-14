@@ -24,13 +24,28 @@ Because it's annoying to reinstall StartAllBack every 100 days. I made this patc
 
 ## What does it do?
 
-- Deletes the registry key that indicates the trial period has started.
-- Checks the hash of `StartAllBackX64.dll` to ensure the file is correct.
-- Creates a backup of `StartAllBackX64.dll` in the same folder, named `StartAllBackX64.bak`.
-- Stops all instances of `Explorer.exe` and `StartAllBackCfg.exe`.
-- Patches `StartAllBackX64.dll`.
-- Restarts `Explorer.exe`.
-- That's all!
+```mermaid
+graph TD;
+    A[Start] --> B[Delete Trial Registry Key]
+    B --> C[Verify File Hash]
+    
+    C -- Known Indexes --> D[Create Backup]
+    C -- Unknown Indexes --> E[Identify Function Indexes to Patch]
+    
+    E -- Functions Found --> D
+    E -- Functions Not Found --> H[Error: Cannot Patch]
+    
+    D --> G["Terminate Processes (Explorer, StartAllBack)"]
+    G --> I[Apply Patch]
+    I --> J[Verify Patch]
+    
+    J -- Patch Verified --> K[Restart Processes]
+    J -- Patch Failed --> M[Restore Backup then restart processes]
+    
+    M -- Abort --> H[End]
+    
+    K --> H[End]
+```
 
 ## The patch
 
